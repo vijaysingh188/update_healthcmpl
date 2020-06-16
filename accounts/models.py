@@ -22,3 +22,12 @@ class ModuleMaster(models.Model):
 
 	def __str__(self):
 		return self.module_name
+
+class Contact(models.Model):
+	name = models.CharField(max_length=255, blank=True)
+	phone_no = models.CharField(max_length=255, blank=True)
+	email = models.EmailField(max_length=255, blank=True)
+	message = models.CharField(max_length=255, blank=True)
+
+	def __str__(self):
+		return self.name

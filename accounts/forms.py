@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate, get_user_model
 from django.forms import ModelForm
-from .models import SecurityQuestions, ModuleMaster
+from .models import SecurityQuestions, ModuleMaster, Contact
 
 User = get_user_model()
 
@@ -44,3 +44,12 @@ class ModuleMasterForm(ModelForm):
 		fields = ['module_name','module_code','no_of_patients','web_space','amount','cgst','sgst','gst','total_amount']
 
 
+class ContactForm(ModelForm):
+	name = forms.CharField()
+	phone_no = forms.CharField()
+	email = forms.CharField()
+	message = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 5}))
+
+	class Meta:
+		model = Contact
+		fields = ['name','phone_no','email','message']

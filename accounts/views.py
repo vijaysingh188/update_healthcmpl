@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, get_user_model, login, logout
-from .forms import UserLoginForm, SecurityQuestionsForm, PasswordForm, ModuleMasterForm, PasswordVerificationForm
+from .forms import UserLoginForm, SecurityQuestionsForm, PasswordForm, ModuleMasterForm, ContactForm, PasswordVerificationForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
-from .models import SecurityQuestions, ModuleMaster
+from .models import SecurityQuestions, ModuleMaster, Contact
 from django.http import Http404
 from django.contrib import messages
 from django.http import JsonResponse
@@ -14,7 +14,26 @@ import requests
 
 @csrf_exempt
 def contact(request):
-	return render(request, "Contact_Us.html", {})
+	if request.method == 'POST':
+		form = ContactForm(request.POST)
+		name = request.POST.get('name')
+		print(form.errors)
+		if form.is_valid():
+			if form.save():
+				return redirect('/contact', messages.success(request, 'Thank you for contacting Us. Our team will contact you as soon as earliest.', 'alert-success'))
+			else:
+				return redirect('/contact', messages.error(request, 'Something went wrong!', 'alert-danger'))
+		else:
+			return redirect('/contact', messages.error(request, 'Form is not valid', 'alert-danger'))
+	else:
+		form = ContactForm()
+		return render(request, "Contact_Us.html", {'form':form})
+
+@login_required
+@csrf_exempt
+def contact_master(request):
+	module = Contact.objects.all()
+	return render(request, "Contact_Us_List.html", {'module': module})
 
 @csrf_exempt
 def home(request):
