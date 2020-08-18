@@ -13,8 +13,12 @@ SECRET_KEY = ')cng0k70r)*mtw%+&qz+ti+53dr6_kjx(g#w#7_fu!o@gv8tjd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['cmplupdates.pythonanywhere.com','64.202.185.47','127.0.0.1']
 
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+AUTHENTICATION_BACKENDS = ['accounts.backends.SODMZSModelBackend']
 
 # Application definition
 
@@ -27,6 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'widget_tweaks',
     'accounts',
+    'profiles',
 ]
 
 MIDDLEWARE = [
@@ -69,10 +74,19 @@ DATABASES = {
         'NAME': 'health_perigon_db',
         'USER': '',
         'PASSWORD':'',
-        'HOST': '127.0.0.1',
+        'HOST': 'ip-64-202-185-47.ip.secureserver.net',
         'PORT':27020,
     }
 }
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtpout.secureserver.net'
+EMAIL_HOST_USER = 'support@healthperigon.net'
+DEFAULT_FROM_EMAIL = 'support@healthperigon.net'
+EMAIL_HOST_PASSWORD = 'admin@healthperigon'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_USE_TLS = False
+
 
 
 # Password validation
@@ -115,3 +129,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 STATIC_URL = '/static/'
+
+MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
