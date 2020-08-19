@@ -1146,10 +1146,10 @@ def Add_streaming_link(request):
 	if query == True:
 		query = Webregister.objects.filter(eventtitle=eventtitle).update(streaming_link=streaming_link)
 	else:
-		print("no")
+		return JsonResponse({"success": False}, status=400)
 
 
-	return HttpResponse()
+	return JsonResponse({"success": True}, status=200)
 
 @csrf_exempt
 def add_coupon(request):
