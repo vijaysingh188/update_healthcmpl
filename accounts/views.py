@@ -1387,6 +1387,8 @@ def destroyevent(request, module_id):
 @csrf_exempt
 def partner_and_event_register(request):
 	if request.method == 'POST':
+		created_on = request.POST.get('created_on')
+		print(created_on,'created_on') #2020-08-22T18:16 created_on
 		form = Eventregistertable(request.POST)
 		if form.is_valid():
 			form.save()
@@ -1411,9 +1413,7 @@ def partner_and_event_register(request):
 										messages.error(request, 'Please proper format for header_eventimage','alert-danger'))
 						if header_eventimage:
 							if header_eventimage.size > 1000 * 100:  # 41937
-								return redirect('/partner_and_event_register', messages.error(request,
-																					  'Images should have proper configuration for footer_eventimage ',
-																					  'alert-danger'))
+								return redirect("/partner_and_event_register", messages.error(request, 'Images should have proper configuration for footer_eventimage ', 'alert-danger'))
 
 					if footer_eventimage:
 						b = pathlib.Path(str(footer_eventimage)).suffix

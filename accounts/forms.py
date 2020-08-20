@@ -335,9 +335,8 @@ class Eventregistertable(forms.ModelForm):
         ('Webinar', 'webinar'),
         ('Conference', 'Conference'),
     )
-    eventtype = forms.ChoiceField(choices=EVENT_OPTION) #'%Y-%m-%d' '%d/%m/%Y' '%Y-%m-%d %H:%M',
-    # created_on = forms.DateField(widget=forms.DateInput(attrs={'id': 'datetime_from'}, format='%Y-%m-%d'))#input_formats=settings.DATE_INPUT_FORMATS 2020-08-30
-    created_on = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'id': 'birthdaytime'},format='%Y-%m-%dT%H:%M'),required=False)
+    eventtype = forms.ChoiceField(choices=EVENT_OPTION) #format='%Y-%m-%d %H:%M:%S',
+    created_on = forms.DateTimeField(widget=forms.DateTimeInput(format='%Y-%m-%dT%H:%M',attrs={'type': 'datetime-local'}))
     Chairpersons = forms.CharField(widget=forms.TextInput(),required=False)
     # name = forms.CharField(widget=forms.TextInput(), required=False)
     mobilenumber = forms.CharField(max_length=10, min_length=10, widget=forms.TextInput(), required=False)

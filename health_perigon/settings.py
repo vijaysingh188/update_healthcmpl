@@ -117,19 +117,13 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 
-# ['%Y-%m-%d %H:%M:%S',    # '2006-10-25 14:30:59'
-#  '%Y-%m-%d %H:%M',       # '2006-10-25 14:30'
-#  '%Y-%m-%d',             # '2006-10-25'
-#  '%m/%d/%Y %H:%M:%S',    # '10/25/2006 14:30:59'
-#  '%m/%d/%Y %H:%M',       # '10/25/2006 14:30'
-#  '%m/%d/%Y',             # '10/25/2006'
-#  '%m/%d/%y %H:%M:%S',    # '10/25/06 14:30:59'
-#  '%m/%d/%y %H:%M',       # '10/25/06 14:30'
-#  '%m/%d/%y']
+from django.conf.global_settings import DATETIME_INPUT_FORMATS # DATE_INPUT_FORMATS
+# DATE_INPUT_FORMATS += ("%d-%m-%Y",)
+DATETIME_INPUT_FORMATS += ("%Y-%m-%dT%H:%M","%d-%m-%Y %H:%M:%S","%Y-%m-%d %H:%M")  #'%Y-%m-%dT%H:%M' '%Y-%m-%dT%H:%M'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
