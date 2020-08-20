@@ -84,7 +84,7 @@
 						<div class="row">
 							<div class="col-md-12">
 							    <div class="btn-holder">
-							        <a class="link-btn" href="{% url 'eventregister' %}">Add New</a>
+							        <a class="link-btn" href="{% url 'partner_and_event_register' %}">Add New</a>
 						        </div>
 							</div>
 						</div>
@@ -94,7 +94,7 @@
 							    <div class="form-group ">
 								    <span class="color">Event Type</span>
 									<div class="input-group">
-									    <input type="text" class="form-control border-right-0 border" id="" name="">
+									    <input type="text" class="form-control border-right-0 border" id="search_name" name="eventtitle" placeholder="Event Title">
 								    </div>
 								</div>
 							</div>
@@ -102,7 +102,7 @@
 							    <div class="form-group ">
 								    <span class="color">Start Date</span>
 									<div class="input-group">
-									    <input type="date" class="form-control border-right-0 border" id="datetime_from" name="">
+									    <input type="date" class="form-control border-right-0 border" id="datetime_from" name="created_on" placeholder="dd/mm/yyyy">
 								    </div>
 								</div>
 							</div>
@@ -110,7 +110,7 @@
 								<div class="form-group">
 									<span class="color">End Date</span>
 									<div class="input-group">
-										<input type="date" class="form-control border-right-0 border" id="datepicker_to">
+										<input type="date" class="form-control border-right-0 border" id="datepicker_to" name="end_on" placeholder="dd/mm/yyyy">
 									</div>
 								</div>
 							</div>
@@ -310,10 +310,14 @@ $.fn.dataTableExt.afnFiltering.push(
 	    });
 	  })
 </script>
+<!-- module.eventtype -->
+<!-- module.targetaudiance-->
 <script>
 $(document).ready(function() {
 	let formData = {
 		eventtitle: "",
+		eventtype:"",
+		targetaudiance:"",
 		streaming_link: "",
 
 	};
@@ -328,7 +332,10 @@ $(document).ready(function() {
 
 		}).toArray();
 		formData.eventtitle = tdValue[0];
+		formData.eventtype = tdValue[1];
+		formData.targetaudiance = tdValue[2];
 <!--		alert(formData.eventtitle);-->
+		console.log(formData)
 
 		$("#myBtnSave").click(function()  {
 
@@ -342,6 +349,8 @@ $(document).ready(function() {
 				type: "POST",
 				data: {
 					'eventtitle': formData.eventtitle,
+					'eventtype':formData.eventtype,
+					'targetaudiance':formData.targetaudiance,
 					'streaming_link': formData.streaming_link,
 
 				},

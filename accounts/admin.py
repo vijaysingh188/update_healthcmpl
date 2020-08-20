@@ -10,7 +10,7 @@ class Eventregisteradmin(admin.ModelAdmin):
 admin.site.register(Eventregisterationuser,Eventregisteradmin)
 
 class WebregisterAdmin(admin.ModelAdmin):
-    list_display = ['eventtitle']
+    list_display = ['eventtitle','id']
     list_filter = ['id']
 admin.site.register(Webregister,WebregisterAdmin)
 

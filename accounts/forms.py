@@ -323,27 +323,23 @@ class EventregisteruserForm(ModelForm):
 
 
 class Eventregistertable(forms.ModelForm):
-    eventtitle = forms.CharField(widget=forms.TextInput(attrs={}))
+    eventtitle = forms.CharField(widget=forms.TextInput(attrs={'id': 'eventtitle'}))
     TARGET_OPTION = (
         ('HDC', 'HDC'),
         ('Individual', 'Individual'),
         ('Both', 'Both')
     )
-    targetaudiance = forms.ChoiceField(choices=TARGET_OPTION)
+    targetaudiance = forms.ChoiceField(choices=TARGET_OPTION,widget=forms.Select(attrs={'id':'targetaudiance'}))   #targetaudiance choices=TARGET_OPTION
 
     EVENT_OPTION = (
         ('Webinar', 'webinar'),
         ('Conference', 'Conference'),
     )
-    eventtype = forms.ChoiceField(choices=EVENT_OPTION) #'%Y-%m-%d' '%d/%m/%Y'
-    created_on = forms.DateField(widget=forms.DateInput(attrs={'id': 'datetime_from'}, format='%Y-%m-%d'))#input_formats=settings.DATE_INPUT_FORMATS 2020-08-30
-
-
-    end_on = forms.DateField(widget=forms.DateInput(attrs={'id': 'datetime_to'}, format='%Y-%m-%d'))#input_formats=settings.DATE_INPUT_FORMATS
-
-
-    Chairpersons = forms.CharField(required=False)
-    name = forms.CharField(widget=forms.TextInput(), required=False)
+    eventtype = forms.ChoiceField(choices=EVENT_OPTION) #'%Y-%m-%d' '%d/%m/%Y' '%Y-%m-%d %H:%M',
+    # created_on = forms.DateField(widget=forms.DateInput(attrs={'id': 'datetime_from'}, format='%Y-%m-%d'))#input_formats=settings.DATE_INPUT_FORMATS 2020-08-30
+    created_on = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'id': 'birthdaytime'},format='%Y-%m-%dT%H:%M'),required=False)
+    Chairpersons = forms.CharField(widget=forms.TextInput(),required=False)
+    # name = forms.CharField(widget=forms.TextInput(), required=False)
     mobilenumber = forms.CharField(max_length=10, min_length=10, widget=forms.TextInput(), required=False)
     email = forms.EmailField(required=False)
     Moderatorname = forms.CharField(widget=forms.TextInput(), required=False)
@@ -372,60 +368,6 @@ class Eventregistertable(forms.ModelForm):
 
     class Meta:
         model = Webregister
-        fields = ['eventtitle', 'targetaudiance', 'eventtype', 'created_on','end_on', 'Chairpersons', 'name', 'mobilenumber',
+        fields = ['eventtitle', 'targetaudiance', 'eventtype', 'created_on','Chairpersons','mobilenumber',
                   'email', 'Moderatorname', 'mmobile', 'memail', 'ContactPersonanme', 'Cmobile', 'Cemail',
-                  'organisedby', 'Registerationrequired', 'paymentrequired', 'partnerrequired'] # 'sponserby'
-
-# class Eventregistertable(forms.ModelForm):
-#     eventtitle = forms.CharField(widget=forms.TextInput(attrs={}))
-#     TARGET_OPTION = (
-#         ('HDC', 'HDC'),
-#         ('Individual', 'Individual'),
-#         ('Both', 'Both')
-#     )
-#     targetaudiance = forms.ChoiceField(choices=TARGET_OPTION)
-#
-#     EVENT_OPTION = (
-#         ('Webinar', 'webinar'),
-#         ('Conference', 'Conference'),
-#     )
-#     eventtype = forms.ChoiceField(choices=EVENT_OPTION)
-#     created_on = forms.DateField(widget=forms.DateInput(attrs={'id': 'datetime_from'}, format='%Y-%m-%d'),
-#                                  input_formats=settings.DATE_INPUT_FORMATS)
-#     end_on = forms.DateField(widget=forms.DateInput(attrs={'id': 'datetime_to'}, format='%Y-%m-%d'),
-#                                  input_formats=settings.DATE_INPUT_FORMATS)
-# 	Chairpersons = forms.CharField(required=False)
-# 	name = forms.CharField(widget=forms.TextInput(), required=False)
-#     mobilenumber = forms.CharField(max_length=10, min_length=10, widget=forms.TextInput(), required=False)
-#     email = forms.EmailField()
-#     Moderatorname = forms.CharField(widget=forms.TextInput(), required=False)
-#     mmobile = forms.CharField(max_length=10, min_length=10, widget=forms.TextInput(), required=False)
-#     memail = forms.EmailField(required=False)
-#     ContactPersonanme = forms.CharField(widget=forms.TextInput(), required=False)
-#     Cmobile = forms.CharField(max_length=10, min_length=10, widget=forms.TextInput(), required=False)
-#     Cemail = forms.EmailField(required=False)
-#     organisedby = forms.CharField(widget=forms.TextInput(), required=False)
-#     sponserby = forms.CharField(widget=forms.TextInput(), required=False)
-#     CHOICES = (
-#         ('Yes', 'Yes'), ('No', 'NO'),
-#     )
-#     Registerationrequired = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect(), required=False)
-#
-#     CHOICES = (
-#         ('Yes', 'Yes'), ('No', 'NO'),
-#     )
-#     paymentrequired = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect(), required=False)
-#     CHOICES = (
-#         ('Yes', 'Yes'),
-#         ('No', 'NO'),
-#     )
-#
-#     partnerrequired = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect(), required=False)
-#
-#     class Meta:
-#         model = Webregister
-#         fields = ['eventtitle', 'targetaudiance', 'eventtype', 'created_on','end_on', 'Chairpersons', 'name', 'mobilenumber',
-#                   'email', 'Moderatorname', 'mmobile', 'memail', 'ContactPersonanme', 'Cmobile', 'Cemail',
-#                   'organisedby', 'sponserby', 'Registerationrequired', 'paymentrequired', 'partnerrequired']
-
-
+                  'organisedby','sponserby','Registerationrequired', 'paymentrequired', 'partnerrequired'] # , 'name','sponserby','end_on',

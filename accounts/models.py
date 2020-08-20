@@ -215,10 +215,10 @@ class Webregister(models.Model):
     eventtitle = models.CharField(max_length=255)
     targetaudiance = models.CharField(max_length=255)
     eventtype = models.CharField(max_length=255)
-    created_on = models.DateField(null=True,blank=True)
-    end_on = models.DateField(null=True, blank=True)
+    created_on = models.DateTimeField(null=True, blank=True)
+    # end_on = models.DateField(null=True, blank=True)
     Chairpersons = models.CharField(max_length=255)
-    name = models.CharField(max_length=255)
+    # name = models.CharField(max_length=255)
     mobilenumber = models.CharField(max_length=255)
     email = models.EmailField()
     Moderatorname = models.CharField(max_length=266)
@@ -237,7 +237,7 @@ class Webregister(models.Model):
     streaming_link = models.CharField(max_length=255,null=True,blank=True)
 
     def __str__(self):
-        return self.email
+        return str(self.pk)
 
 class Eventregisterationuser(models.Model):
     webregister = models.ForeignKey(Webregister,on_delete=models.CASCADE)

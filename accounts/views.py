@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
-from .models import SecurityQuestions, ModuleMaster, Contact, LaboratoryPreDefine, LaboratoryEmpty, CustomUser, AddOnServices,pharamcytab, LaboratoryModule, Coupon, Webregister
+from .models import SecurityQuestions, ModuleMaster, Contact, LaboratoryPreDefine, LaboratoryEmpty, CustomUser, AddOnServices,pharamcytab, LaboratoryModule, Coupon, Webregister,Eventregisterationuser
 from django.http import Http404
 from django.http import Http404
 from django.contrib import messages
@@ -1091,13 +1091,48 @@ def Custom_user_list(request):
 
 	return render(request,'custom_user_list.html',context)
 	
+# @csrf_exempt
+# def coupon_code_list(request):
+# 	coupon_obj = Coupon.coupon.all().values_list('code', flat=True)              #,'profileChoices'
+# 	final_data = []
+#
+# 	for i in coupon_obj:
+# 		coup_count = CustomUser.objects.filter(usecode=i).values_list('email', flat=True)
+# 		coup_count_use = len(coup_count)
+# 		coupon_obj1 = list(Coupon.objects.filter(code=i).values())
+# 		a = dict(used_number=coup_count_use)
+# 		coupon_obj1[0].update(a)
+# 		final_data.append(coupon_obj1)
+# 	done=[]
+# 	for l in final_data:
+# 		done.append(l[0])
+#
+# 	context = {
+# 		'coupon':done
+# 	}
+# 	return render(request,'coupon_code_list.html',context)
 @csrf_exempt
 def coupon_code_list(request):
-	coupon_obj = Coupon.coupon.all().values_list('code', flat=True)              #,'profileChoices'
+	coupon_obj = Coupon.coupon.all().values_list('code',flat=True)              #,'profileChoices'
+	some_obj = Coupon.coupon.all().values_list('code','profileChoices')
+	# [('CODE00', 'is_hdc_hospital'), ('CODE01', 'is_individual'), ('CODE03', 'is_individual'), ('CODE04', 'is_hdc_nursing_home'), ('CODE05', 'is_hdc_individual')]
+	some_list = ['is_hdc_hospital','is_individual','is_individual','is_hdc_individual']
+	# CODE00 is_hdc_hospital
+
+	# True some_count
+
+
+	print(some_obj,'some_obj')
+	for i,j in some_obj:
+		print(i,j)
+		some_count = CustomUser.objects.filter(usecode=i,is_hdc_hospital=True).values_list('email')
+		print(some_count,'some _count')
+
 	final_data = []
 
 	for i in coupon_obj:
 		coup_count = CustomUser.objects.filter(usecode=i).values_list('email', flat=True)
+		print(coup_count,'coup_count')
 		coup_count_use = len(coup_count)
 		coupon_obj1 = list(Coupon.objects.filter(code=i).values())
 		a = dict(used_number=coup_count_use)
@@ -1139,12 +1174,15 @@ def Coupon_status_change(request):
 def Add_streaming_link(request):
 	streaming_link = request.POST.get("streaming_link")
 	eventtitle = request.POST.get("eventtitle")
+	eventtype = request.POST.get("eventtype")
+	targetaudiance = request.POST.get("targetaudiance")
+
 	print(eventtitle,'eventtitle')
 
-	query = Webregister.objects.filter(eventtitle=eventtitle).exists()
+	query = Webregister.objects.filter(eventtitle=eventtitle,eventtype=eventtype,targetaudiance=targetaudiance).exists()
 	print(query,'query')
 	if query == True:
-		query = Webregister.objects.filter(eventtitle=eventtitle).update(streaming_link=streaming_link)
+		query = Webregister.objects.filter(eventtitle=eventtitle,eventtype=eventtype,targetaudiance=targetaudiance).update(streaming_link=streaming_link)
 	else:
 		return JsonResponse({"success": False}, status=400)
 
@@ -1348,15 +1386,105 @@ def destroyevent(request, module_id):
 
 @csrf_exempt
 def partner_and_event_register(request):
-	if request.method == "POST" and request.is_ajax():
-
+	if request.method == 'POST':
 		form = Eventregistertable(request.POST)
-
-
 		if form.is_valid():
-			print("after")
-			form.save(commit=False)
+			form.save()
+			aa = Webregister.objects.latest('id')
+			obj = Eventregisterationuser.objects.create(webregister=aa)
+			form1 = EventregisteruserForm(request.POST, request.FILES, instance=obj)
+			if form1.is_valid():
+				header_eventimage = form.cleaned_data.get('header_eventimage')
+				footer_eventimage = form.cleaned_data.get('footer_eventimage')
+				streaming_header = form.cleaned_data.get('streaming_header')
+				streaming_leftpanel = form.cleaned_data.get('streaming_leftpanel')
+				streaming_rightpanel = form.cleaned_data.get('streaming_rightpanel')
+				types = ['.jpg', '.png', '.jpeg', '.PNG']
 
-	return JsonResponse({"success": True}, status=200)
+				import pathlib
+				if header_eventimage:
+					print("yes")
+					a = pathlib.Path(str(header_eventimage)).suffix
+
+					if a not in types:
+						return redirect('/partner_and_event_register',
+										messages.error(request, 'Please proper format for header_eventimage','alert-danger'))
+						if header_eventimage:
+							if header_eventimage.size > 1000 * 100:  # 41937
+								return redirect('/partner_and_event_register', messages.error(request,
+																					  'Images should have proper configuration for footer_eventimage ',
+																					  'alert-danger'))
+
+					if footer_eventimage:
+						b = pathlib.Path(str(footer_eventimage)).suffix
+
+						if b not in types:
+							return redirect('/partner_and_event_register',
+											messages.error(request, 'Please proper format for footer_eventimage',
+														   'alert-danger'))
+
+						if footer_eventimage:
+							if footer_eventimage.size > 1000 * 100:  # 41937
+								return redirect('/partner_and_event_register', messages.error(request,
+																					  'Images should have proper configuration for footer_eventimage ',
+																					  'alert-danger'))
+
+					if streaming_header:
+						c = pathlib.Path(str(streaming_header)).suffix
+
+						if c not in types:
+							return redirect('/partner_and_event_register',
+											messages.error(request, 'Please proper format for streaming_header',
+														   'alert-danger'))
+
+						if streaming_header:
+							if streaming_header.size > 1000 * 100:  # 41937
+								return redirect('/partner_and_event_register', messages.error(request,
+																					  'Images should have proper configuration for streaming_header',
+																					  'alert-danger'))
+
+					if streaming_leftpanel:
+						d = pathlib.Path(str(streaming_leftpanel)).suffix
+
+						if d not in types:
+							return redirect('/partner_and_event_register',
+											messages.error(request, 'Please proper format for streaming_leftpanel',
+														   'alert-danger'))
+
+						if streaming_leftpanel:
+							if streaming_leftpanel.size > 200 * 700:  # 41937
+								return redirect('/partner_and_event_register', messages.error(request,
+																					  'Images should have proper configuration for streaming_leftpanel',
+																					  'alert-danger'))
+					if streaming_rightpanel:
+						e = pathlib.Path(str(streaming_rightpanel)).suffix
+
+						if e not in types:
+							return redirect('/partner_and_event_register',
+											messages.error(request, 'Please proper format for streaming_leftpanel',
+														   'alert-danger'))
+
+						if streaming_rightpanel:
+							if streaming_rightpanel.size > 200 * 700:  # 41937
+								return redirect('/partner_and_event_register', messages.error(request,
+																					  'Images should have proper configuration for streaming_rightpanel',
+																					  'alert-danger'))
+
+
+
+				form1.save()
+				return redirect('/partner_and_event_register',
+								messages.success(request, 'visibility is created successfully.', 'alert-success'))
+
+
+			return redirect('/partner_and_event_register',
+								messages.success(request, 'Event is created successfully.', 'alert-success'))
+
+		else:
+			return redirect('/partner_and_event_register', messages.error(request, 'Event is not valid', 'alert-danger'))
+	else:
+		form = Eventregistertable()
+		form1 = EventregisteruserForm()
+		return render(request,'create_partner.html', {'form': form,'form1':form1})
 
 
