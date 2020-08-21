@@ -78,6 +78,13 @@
 		</div>-->
 		<div class="col-md-12">
 			<div class="content-holder">
+				{% if messages %}
+                            {% for message in messages %}
+                                <div {% if message.tags %} class="alert {{ message.tags }} text-center"{% endif %}>
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
 				<div class="row">
 					<div class="col-md-12 order-md-1">
 						<h5 class="title-holder">Existing Event List</h5>
@@ -361,6 +368,8 @@ $(document).ready(function() {
 
 				success: function(response) {
 					alert("Streaming link added succesfully");
+<!--					$("#streaming_link").fadeOut("slow");-->
+					$("#myBtnSave").fadeOut("slow");
 
 				}
 

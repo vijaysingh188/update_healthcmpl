@@ -55,8 +55,8 @@
 					<a class="nav-link {% ifequal request.path '/register1/'%} active {% endifequal%}" href="{% url 'register1' %}">User Registeration </a>
 					<a class="nav-link {% if request.path == Custom_user_list_url %}active {%endif%}" href="{% url 'Custom_user_list' %}">User List</a>
 					<a class="nav-link {% if request.path == coupon_code_list_url %}active {%endif%}" href="{% url 'coupon_code_list' %}">Coupon code List</a>
-					<a class="nav-link {% ifequal request.path '/eventregister/'%} active {% endifequal%}" href="{% url 'eventregister' %}">Event Registeration </a>
-					<a class="nav-link {% ifequal request.path '/partner_visibility/'%} active {% endifequal%}" href="{% url 'partner_visibility' %}">Partner Visibility </a>
+					<a class="nav-link {% ifequal request.path '/partner_and_event_register/'%} active {% endifequal%}" href="{% url 'partner_and_event_register' %}">Event Registeration </a>
+					<a class="nav-link {% ifequal request.path '/eventtable/'%} active {% endifequal%}" href="{% url 'eventtable' %}">Event Table</a>
 
 				</div>
 			</div>

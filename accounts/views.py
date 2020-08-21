@@ -1364,20 +1364,37 @@ def registerlink(request, module_id):
         form = Eventregistertable(instance=module)
         return render(request, 'editevent.html', {'form':form})
 
-def editevent(request, module_id):
-    module = Webregister.objects.get(id=module_id)
-    if request.POST:
-        form = Eventregistertable(request.POST, instance=module)
-        if form.is_valid():
-            if form.save():
-                return redirect('/eventregister', messages.success(request, 'Event is successfully updated.', 'alert-success'))
-            else:
-                return redirect('/eventregister', messages.error(request, 'Event is not saved', 'alert-danger'))
-        else:
-            return redirect('/eventregister', messages.error(request, 'Event is not valid', 'alert-danger'))
-    else:
-        form = Eventregistertable(instance=module)
-        return render(request, 'editevent.html', {'form':form})
+
+def editevent(request, module_id): #,new_module
+	module = Webregister.objects.get(id=module_id)
+
+	new_module = Eventregisterationuser.objects.get(webregister=module)
+
+	if request.POST:
+		print("post")
+		form = Eventregistertable(request.POST,instance=module)
+		print("1")
+		form1 = EventregisteruserForm(request.POST,request.FILES,instance=new_module)
+		print("2")
+		if form.is_valid():
+			form.save()
+			if form1.is_valid():
+				print("im here")
+				form1.save()
+				return redirect('/eventtable/', messages.error(request, 'successfully updated', 'alert-danger'))
+		else:
+			return redirect('/editevent/', messages.error(request, 'Form is not valid', 'alert-danger'))
+	else:
+		print("else")
+		form = Eventregistertable(instance=module)
+		# print(form,"form")
+		form1 = EventregisteruserForm(instance=new_module)
+		# print(form1,"form1")
+		p_image = Eventregisterationuser.objects.filter(webregister=module).values()[0]
+
+		p_image.update(form1.data)
+		print(p_image, "p_image")
+		return render(request, 'editevent.html', {'form':form,'form1':p_image})
 
 def destroyevent(request, module_id):
     module = Webregister.objects.get(id=module_id)
@@ -1389,6 +1406,7 @@ def partner_and_event_register(request):
 	if request.method == 'POST':
 		created_on = request.POST.get('created_on')
 		print(created_on,'created_on') #2020-08-22T18:16 created_on
+
 		form = Eventregistertable(request.POST)
 		if form.is_valid():
 			form.save()
@@ -1481,10 +1499,9 @@ def partner_and_event_register(request):
 								messages.success(request, 'Event is created successfully.', 'alert-success'))
 
 		else:
-			return redirect('/partner_and_event_register', messages.error(request, 'Event is not valid', 'alert-danger'))
+			return redirect('/partner_and_event_register', messages.error(request, 'Form is not valid', 'alert-danger'))
 	else:
 		form = Eventregistertable()
 		form1 = EventregisteruserForm()
 		return render(request,'create_partner.html', {'form': form,'form1':form1})
-
 

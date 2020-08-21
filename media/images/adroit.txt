@@ -1,0 +1,39 @@
+our project is name DMS(DATA MANAGEMENT SYSTEM)
+its is  Banking domain project consits of manager and multiple employee where is manager is superuser
+
+This hard copy documents goes to another team where the put the documents in the scanner
+this team gets documents of coustmore details in .ini format
+Details are account_page,PAN card,addhard card(near about 5pages) whether is saving account,current account or join account
+
+ 
+fetch the data from that account-detail page where the important part is signature fisrtly our app will locate where the
+signature is in the form by using grid position and it will automatically crop the signature
+This cropped sign is  saved in our Database for future varification to know wheter is authenicated signature or not
+cons:if any mistakes occur he will again put the documents of particular person in scanner
+
+
+Approved documents is received by employee 
+from Here onwards our project comes to work
+at current we have coustmores details like name,account name,account type,Pan card,addhard card and all those
+documents in single pdf format
+
+for authentication purpose of employee and manager Facial recoginition is used
+
+with the help of pdf editor employee check everying document deatils are in right way
+this data is moved from employee to manager for cross verfification 
+if manager rejects it the data is moved to archive where it will be for 14days
+
+if nothing goes a wrong 
+A new coustmore has now created with all required details
+
+There is machine learnig API OCR(optical charcter reconition) 
+The role of OCR is get data from PAN CARD and AADHAR card
+
+and we have  ICR(intelligent charcter recogintion)
+with use of this Api data from Cheuqe can be fetched like amount,date of cheque,name on the cheque later can be used for verfication
+
+Note:
+for security purpose 5different packges is used
+database postgres sql
+
+
