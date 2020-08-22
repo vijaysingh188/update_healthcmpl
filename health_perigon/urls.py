@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from accounts.views import (home, password_reset_admin, change_password_admin, send_otp_admin, laboratory_edit, 
+from accounts.views import (sign_up,home, password_reset_admin, change_password_admin, send_otp_admin, laboratory_edit,
 laboratory_update, laboratory_insertion, verify_otp_admin, login_view_admin, login_view, logout_view, 
 contact, activate_account, register, password_reset, contact_master, change_password, send_otp, 
 verify_otp, existing_module_master, create_module_master, edit_module_master, destroy_module_master, 
@@ -11,6 +11,7 @@ from profiles.views import individual_doctor, individual_user, nursing_home, hos
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',home, name="home"),
+    path('sign_up/',sign_up, name="sign_up"),
     path('contact/',contact, name="contact"),
     path('register/',register, name="register"),
     path('contact_master/',contact_master, name="contact_master"),

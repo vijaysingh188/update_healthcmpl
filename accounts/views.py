@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, get_user_model, login, logout
-from .forms import UserLoginForm, PasswordVerificationAdminForm, SecurityQuestionsForm, PasswordForm, IndivdualUserForm, IndivdualDoctorForm, HospitalForm, NursingHomeForm, ModuleMasterForm, ContactForm, PasswordVerificationForm, AddServices,pharamcy, CouponForm, EventregisteruserForm,Eventregistertable
+from .forms import SignUpForm,UserLoginForm, PasswordVerificationAdminForm, SecurityQuestionsForm, PasswordForm, IndivdualUserForm, IndivdualDoctorForm, HospitalForm, NursingHomeForm, ModuleMasterForm, ContactForm, PasswordVerificationForm, AddServices,pharamcy, CouponForm, EventregisteruserForm,Eventregistertable
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
@@ -23,8 +23,20 @@ import json
 from .decorators import superadmin_required
 from profiles.models import IndivdualDoctorProfile, NursingHomeProfile, HospitalProfile, IndivdualUserProfile
 from django.conf import settings
-
+from django.contrib.auth.forms import UserCreationForm
 #from django.contrib.auth.forms import SetPasswordForm
+
+
+def sign_up(request):
+	if request.method == "POST":
+		form = SignUpForm(request.POST)
+		if form.is_valid():
+			form.save()
+	else:
+		form = SignUpForm()
+	return render(request,'sign_up.html',{'form':form})
+
+
 
 
 
@@ -1404,17 +1416,18 @@ def destroyevent(request, module_id):
 @csrf_exempt
 def partner_and_event_register(request):
 	if request.method == 'POST':
-		created_on = request.POST.get('created_on')
-		print(created_on,'created_on') #2020-08-22T18:16 created_on
-
 		form = Eventregistertable(request.POST)
 		if form.is_valid():
 			form.save()
 			aa = Webregister.objects.latest('id')
 			obj = Eventregisterationuser.objects.create(webregister=aa)
 			form1 = EventregisteruserForm(request.POST, request.FILES, instance=obj)
+
+
 			if form1.is_valid():
+				print("im here")
 				header_eventimage = form.cleaned_data.get('header_eventimage')
+				print(header_eventimage,'header_eventimage')
 				footer_eventimage = form.cleaned_data.get('footer_eventimage')
 				streaming_header = form.cleaned_data.get('streaming_header')
 				streaming_leftpanel = form.cleaned_data.get('streaming_leftpanel')
@@ -1504,4 +1517,111 @@ def partner_and_event_register(request):
 		form = Eventregistertable()
 		form1 = EventregisteruserForm()
 		return render(request,'create_partner.html', {'form': form,'form1':form1})
+
+# @csrf_exempt
+# def partner_and_event_register(request):
+# 	if request.method == 'POST':
+# 		created_on = request.POST.get('created_on')
+# 		print(created_on,'created_on') #2020-08-22T18:16 created_on
+#
+# 		form = Eventregistertable(request.POST)
+# 		if form.is_valid():
+# 			form.save()
+# 			aa = Webregister.objects.latest('id')
+# 			obj = Eventregisterationuser.objects.create(webregister=aa)
+# 			form1 = EventregisteruserForm(request.POST, request.FILES, instance=obj)
+#
+# 			if form1.is_valid():
+# 				print("im here")
+# 				header_eventimage = form.cleaned_data.get('header_eventimage')
+# 				print(header_eventimage,'header_eventimage')
+# 				footer_eventimage = form.cleaned_data.get('footer_eventimage')
+# 				streaming_header = form.cleaned_data.get('streaming_header')
+# 				streaming_leftpanel = form.cleaned_data.get('streaming_leftpanel')
+# 				streaming_rightpanel = form.cleaned_data.get('streaming_rightpanel')
+# 				types = ['.jpg', '.png', '.jpeg', '.PNG']
+#
+# 				import pathlib
+# 				if header_eventimage:
+# 					print("yes")
+# 					a = pathlib.Path(str(header_eventimage)).suffix
+#
+# 					if a not in types:
+# 						return redirect('/partner_and_event_register',
+# 										messages.error(request, 'Please proper format for header_eventimage','alert-danger'))
+# 						if header_eventimage:
+# 							if header_eventimage.size > 1000 * 100:  # 41937
+# 								return redirect("/partner_and_event_register", messages.error(request, 'Images should have proper configuration for footer_eventimage ', 'alert-danger'))
+#
+# 					if footer_eventimage:
+# 						b = pathlib.Path(str(footer_eventimage)).suffix
+#
+# 						if b not in types:
+# 							return redirect('/partner_and_event_register',
+# 											messages.error(request, 'Please proper format for footer_eventimage',
+# 														   'alert-danger'))
+#
+# 						if footer_eventimage:
+# 							if footer_eventimage.size > 1000 * 100:  # 41937
+# 								return redirect('/partner_and_event_register', messages.error(request,
+# 																					  'Images should have proper configuration for footer_eventimage ',
+# 																					  'alert-danger'))
+#
+# 					if streaming_header:
+# 						c = pathlib.Path(str(streaming_header)).suffix
+#
+# 						if c not in types:
+# 							return redirect('/partner_and_event_register',
+# 											messages.error(request, 'Please proper format for streaming_header',
+# 														   'alert-danger'))
+#
+# 						if streaming_header:
+# 							if streaming_header.size > 1000 * 100:  # 41937
+# 								return redirect('/partner_and_event_register', messages.error(request,
+# 																					  'Images should have proper configuration for streaming_header',
+# 																					  'alert-danger'))
+#
+# 					if streaming_leftpanel:
+# 						d = pathlib.Path(str(streaming_leftpanel)).suffix
+#
+# 						if d not in types:
+# 							return redirect('/partner_and_event_register',
+# 											messages.error(request, 'Please proper format for streaming_leftpanel',
+# 														   'alert-danger'))
+#
+# 						if streaming_leftpanel:
+# 							if streaming_leftpanel.size > 200 * 700:  # 41937
+# 								return redirect('/partner_and_event_register', messages.error(request,
+# 																					  'Images should have proper configuration for streaming_leftpanel',
+# 																					  'alert-danger'))
+# 					if streaming_rightpanel:
+# 						e = pathlib.Path(str(streaming_rightpanel)).suffix
+#
+# 						if e not in types:
+# 							return redirect('/partner_and_event_register',
+# 											messages.error(request, 'Please proper format for streaming_leftpanel',
+# 														   'alert-danger'))
+#
+# 						if streaming_rightpanel:
+# 							if streaming_rightpanel.size > 200 * 700:  # 41937
+# 								return redirect('/partner_and_event_register', messages.error(request,
+# 																					  'Images should have proper configuration for streaming_rightpanel',
+# 																					  'alert-danger'))
+#
+#
+#
+# 				form1.save()
+# 				return redirect('/partner_and_event_register',
+# 								messages.success(request, 'visibility is created successfully.', 'alert-success'))
+#
+#
+# 			return redirect('/partner_and_event_register',
+# 								messages.success(request, 'Event is created successfully.', 'alert-success'))
+#
+# 		else:
+# 			return redirect('/partner_and_event_register', messages.error(request, 'Form is not valid', 'alert-danger'))
+# 	else:
+# 		form = Eventregistertable()
+# 		form1 = EventregisteruserForm()
+# 		return render(request,'create_partner.html', {'form': form,'form1':form1})
 

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+</head>
+<body>
+<form method="POST" novalidate>
+    {% csrf_token %}
+<!--    {% for form in form %}-->
+<!--    {{ form.label_tag }}{{ form }} {{form.errors|striptags}}-->
+    {{ form.as_p }}
+    {% endfor %}
+
+    <input type="submit" value="submit">
+
+</form>
+</body>
+</html>

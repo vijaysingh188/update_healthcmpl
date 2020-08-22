@@ -920,6 +920,29 @@ given frequency)</span></label>
 
 		</script>
 
+<script>
+$(document).ready(function(){
+    $("#header_eventimage").validate({
+    onfocusout: function(e) {  // this option is not needed
+        this.element(e);       // this is the default behavior
+    },
+    rules:{
+        resume:{
+            required:true,
+            extension: "jpeg|PNG|jpg"
+        }
+    },
+    messages: {  // <-- you must declare messages inside of "messages" option
+        resume:{
+            required:"input type is required",
+            extension:"select valid input file format"
+        }
+    }
+});
+});
+
+</script>
+
   {% endblock %}
 
 

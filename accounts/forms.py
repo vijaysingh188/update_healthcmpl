@@ -9,8 +9,16 @@ from django_countries.fields import CountryField
 from accounts.validators import validate_password_digit, validate_password_uppercase,validate_pass
 from django.conf import settings
 #from accounts.validators import validate_password_digit, validate_password_uppercase,validate_pass
-
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 User = get_user_model()
+
+class SignUpForm(UserCreationForm):
+	class Meta():
+		model = CustomUser
+		fields = ['firstname','middlename','lastname','email','phone']
+
+
 
 class CustomUserCreationForm(UserCreationForm):
 	class Meta(UserCreationForm):
@@ -197,7 +205,7 @@ class pharamcy(ModelForm):
    scientificcontactnumber = forms.CharField(max_length=10, validators=[MinLengthValidator(10)], required=False)
    scientificemailaddress = forms.EmailField(error_messages={'required':'Enter a Valid Email Address'},widget=forms.TextInput(attrs={'placeholder':'email'}),required=False)
    scientificphonenumber = forms.CharField(max_length=10, validators=[MinLengthValidator(10)], required=False)
-    
+
    class Meta:
        model = pharamcytab
        fields = ['companyname','addresslineone','addresslinetwo','streetname','city','country','state','pincode','nationalhead','contactnumber','emailaddress','phonenumber','regionalhead','regionalcontactnumber','regionalemailaddress','regionalphonenumber','scientifichead','scientificcontactnumber','scientificemailaddress','scientificphonenumber']
@@ -295,7 +303,7 @@ class CouponForm(ModelForm):
 	class Meta:
 		model = Coupon
 		fields = ['code','count_value','startDate','endDate','profileChoices']
-		
+
 
 class EventregisteruserForm(ModelForm):
     use_required_attribute = False
