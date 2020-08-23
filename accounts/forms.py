@@ -16,7 +16,7 @@ User = get_user_model()
 class SignUpForm(UserCreationForm):
 	class Meta():
 		model = CustomUser
-		fields = ['firstname','middlename','lastname','email','phone']
+		fields = ['firstname','middlename','lastname','email','phone_no']
 
 
 

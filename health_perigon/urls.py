@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from accounts.views import (sign_up,home, password_reset_admin, change_password_admin, send_otp_admin, laboratory_edit,
+from accounts.views import (user_login,sign_up,home, password_reset_admin, change_password_admin, send_otp_admin, laboratory_edit,
 laboratory_update, laboratory_insertion, verify_otp_admin, login_view_admin, login_view, logout_view, 
 contact, activate_account, register, password_reset, contact_master, change_password, send_otp, 
 verify_otp, existing_module_master, create_module_master, edit_module_master, destroy_module_master, 
@@ -10,8 +10,11 @@ coupon_code_list, register1, Coupon_to_create,add_coupon,Coupon_status_change,cu
 from profiles.views import individual_doctor, individual_user, nursing_home, hospital, useraddebyindvidualdoctor, individual_doctor_user_list, individual_doctor_user_creation, individual_doctor_change_password, set_password, user_password
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     path('',home, name="home"),
     path('sign_up/',sign_up, name="sign_up"),
+    path('user_login/',user_login, name="user_login"),
+    # path('password_reset_user/',password_reset_user, name="password_reset_user"),password_reset_user,
     path('contact/',contact, name="contact"),
     path('register/',register, name="register"),
     path('contact_master/',contact_master, name="contact_master"),

@@ -10,6 +10,10 @@ import requests
 class CustomUser(AbstractUser):
 	username = None
 	email = models.EmailField(_('email address'), unique=True)
+	# username = models.CharField(max_length=10, blank=True, null=True)
+	firstname = models.CharField(max_length=10, blank=True, null=True)
+	middlename = models.CharField(max_length=10, blank=True, null=True)
+	lastname = models.CharField(max_length=10, blank=True, null=True)
 	title = models.CharField(max_length=10, blank=True, null=True)
 	middle_name = models.CharField(max_length=255, blank=True, null=True)
 	phone_no = models.CharField(max_length=255, unique=True)
