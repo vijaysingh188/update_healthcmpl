@@ -565,6 +565,12 @@ span.switch-label:after {
 <!--                                                <input type="datetime-local" class="form-control" id="created_on"  name="created_on" />-->
 
                                             </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label>End Date / Time <span class="red-color"> * </span></label>
+                                                {{ form.ends_on | add_class:'form-control' }}
+<!--                                                <input type="datetime-local" class="form-control" id="created_on"  name="created_on" />-->
+
+                                            </div>
 
                                             <div class="col-md-4 mb-3">
                                                 <label>Chairpersons Name</label>
@@ -625,7 +631,7 @@ span.switch-label:after {
 
                                             <div class="col-md-4 mb-3">
                                                 <label>Organized by</label>
-                                                {{ form.organisedby| add_class:'form-control' }}
+                                                {{ form.organizedby| add_class:'form-control' }}
 <!--                                                <input type="text" class="form-control" id="organisedby" name="organisedby" />-->
                                             </div>
 

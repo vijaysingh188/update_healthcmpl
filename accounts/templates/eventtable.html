@@ -144,7 +144,8 @@
 												<th>Event Type</th>
 												<th>Target Audience</th>
 												<th>Features(Registration\ Payment \Partner )</th>
-												<th>Date</th>
+												<th>start Date</th>
+												<th>End date</th>
 
 												<th>Action</th>
 												<th>Streaming Link</th>
@@ -158,6 +159,7 @@
 												<td>{{ module.targetaudiance }}</td>
 												<td><a href="{% url 'registerlink' module.id %}" >www.registerlink/{{module.id}}</td>
 												<td>{{ module.created_on }}</td>
+												<td>{{ module.ends_on }}</td>
 
 												<td>
 													<a href="{% url 'destroyevent' module.id %}"><i class="fa fa-trash action-icons" aria-hidden="true" onclick="return confirm('Are you sure you want to delete this?')"></i></a>

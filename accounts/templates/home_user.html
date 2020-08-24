@@ -268,7 +268,7 @@
 									<input class="form-control" placeholder="Re-enter password" type="password" name="password2">
 								</div> <!-- form-group// -->
 								<div class="form-group">
-									<button style="background:#00adee" type="submit" class="btn btn-primary btn-block"> Register </button>
+									<button style="background:#00adee" type="submit" value="signup" class="btn btn-primary btn-block"> Register </button>
 								</div> <!-- form-group// -->
 								<p class="text-center">Have an account? <a data-toggle="modal" data-target="#squarespaceModal" style="color:#d1232a;font-weight:600" href="#">Log In</a> </p>
 							</form>
@@ -312,7 +312,7 @@
     <form class="form-signin" method="POST" action="{% url 'partner_and_event_register' %}">
     <input type="text" class="form-control" name="username" id="username" placeholder="Email Address or User Name" required autofocus>
     <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
-    <button class="btn btn-lg btn-primary btn-block" type="submit" id="myBtnSave">
+    <button class="btn btn-lg btn-primary btn-block" type="submit" value="login" id="myBtnSave">
         Sign in</button>
 
     <a style="color:#d1232a;font-weight:600" href="{% url 'password_reset_admin' %}" class="pull-right need-help">Forget Password? </a><span class="clearfix"></span>

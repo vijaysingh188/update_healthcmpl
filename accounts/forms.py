@@ -14,174 +14,174 @@ from django.contrib.auth.forms import UserCreationForm
 User = get_user_model()
 
 class SignUpForm(UserCreationForm):
-	class Meta():
-		model = CustomUser
-		fields = ['firstname','middlename','lastname','email','phone_no']
+    class Meta():
+        model = CustomUser
+        fields = ['firstname','middlename','lastname','email','phone_no']
 
 
 
 class CustomUserCreationForm(UserCreationForm):
-	class Meta(UserCreationForm):
-		model = CustomUser
-		fields = ('email',)
+    class Meta(UserCreationForm):
+        model = CustomUser
+        fields = ('email',)
 
 
 class CustomUserChangeForm(UserChangeForm):
-	class Meta:
-		model = CustomUser
-		fields = ('email',)
+    class Meta:
+        model = CustomUser
+        fields = ('email',)
 
 
 class IndivdualUserForm(ModelForm):
-	title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Title'}))
-	first_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'First Name'}))
-	middle_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Middle Name'}))
-	last_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Last Name'}))
-	phone_no = forms.CharField(required=False,max_length=10, validators=[MinLengthValidator(10)],error_messages={'required':'Enter a Valid Phone Number'})
-	email = forms.EmailField(required=False,error_messages={'required':'Enter a Valid Email Address'})
-	password = forms.CharField(widget=forms.PasswordInput(attrs={'id':'pass_log_id'}),required=False)
-	usecode = forms.CharField(required=False)
-	class Meta:
-		model = CustomUser
-		fields = ['title','first_name','middle_name','last_name','phone_no','email','password','usecode']
+    title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Title'}))
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'First Name'}))
+    middle_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Middle Name'}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Last Name'}))
+    phone_no = forms.CharField(required=False,max_length=10, validators=[MinLengthValidator(10)],error_messages={'required':'Enter a Valid Phone Number'})
+    email = forms.EmailField(required=False,error_messages={'required':'Enter a Valid Email Address'})
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'id':'pass_log_id'}),required=False)
+    usecode = forms.CharField(required=False)
+    class Meta:
+        model = CustomUser
+        fields = ['title','first_name','middle_name','last_name','phone_no','email','password','usecode']
 
 
 
 class IndivdualDoctorForm(ModelForm):
-	doctor_options = (
-		('Select Type','Select Type'),
-		('DA','Allopathy'),
-		('DB','Ayurveda'),
-		('DC','Homoeopathy'),
-		('DD','Unani'),
-		('DE','Siddha'),
-		('DF','Junior Doctor'),
-		('DG','Front Desk'),
-		)
-	type_of_doctor = forms.ChoiceField(choices=doctor_options)
-	title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Title'}))
-	first_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'First Name'}))
-	middle_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Middle Name'}))
-	last_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Last Name'}))
-	phone_no = forms.CharField(required=False,max_length=10, validators=[MinLengthValidator(10)],error_messages={'required':'Enter a Valid Phone Number'})
-	payment = forms.CharField(required=False)
-	usecode = forms.CharField(required=False)
-	email = forms.EmailField(required=False,error_messages={'required':'Enter a Valid Email Address'})
-	password = forms.CharField(widget=forms.PasswordInput(attrs={'id':'log'}),required=False)
-	class Meta:
-		model = CustomUser
-		fields = ['type_of_doctor','title','first_name','middle_name','last_name','phone_no','payment','usecode','email','password']
+    doctor_options = (
+        ('Select Type','Select Type'),
+        ('DA','Allopathy'),
+        ('DB','Ayurveda'),
+        ('DC','Homoeopathy'),
+        ('DD','Unani'),
+        ('DE','Siddha'),
+        ('DF','Junior Doctor'),
+        ('DG','Front Desk'),
+        )
+    type_of_doctor = forms.ChoiceField(choices=doctor_options)
+    title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Title'}))
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'First Name'}))
+    middle_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Middle Name'}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Last Name'}))
+    phone_no = forms.CharField(required=False,max_length=10, validators=[MinLengthValidator(10)],error_messages={'required':'Enter a Valid Phone Number'})
+    payment = forms.CharField(required=False)
+    usecode = forms.CharField(required=False)
+    email = forms.EmailField(required=False,error_messages={'required':'Enter a Valid Email Address'})
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'id':'log'}),required=False)
+    class Meta:
+        model = CustomUser
+        fields = ['type_of_doctor','title','first_name','middle_name','last_name','phone_no','payment','usecode','email','password']
 
 
 class HospitalForm(ModelForm):
-	name_of_hospital = forms.CharField()
-	house_no = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'House No'}))
-	street = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Street'}))
-	area = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Locality / Area / Pada'}))
-	city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City / Town / Village'}))
-	taluka = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Taluka'}))
-	district = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'District'}))
-	state = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'State'}))
-	pincode = forms.CharField(max_length=6, validators=[MinLengthValidator(6)], widget=forms.TextInput(attrs={'placeholder':'Pin Code'}))
-	country = CountryField()
-	owner_name = forms.CharField()
-	phone_no = forms.CharField(required=False, validators=[MinLengthValidator(10)], max_length=10,error_messages={'required':'Enter a Valid Phone Number'})
-	email = forms.EmailField(required=False,error_messages={'required':'Enter a Valid Email Address'})
-	no_of_doctor_accounts = forms.CharField()
-	password = forms.CharField(widget=forms.PasswordInput(attrs={'id':'pass'}),required=False)
-	payment = forms.CharField(required=False)
-	usecode = forms.CharField(required=False)
-	class Meta:
-		model = CustomUser
-		fields = ['payment','usecode','name_of_hospital','house_no','street','area','city','taluka','district','state','pincode','country','owner_name','phone_no','email','no_of_doctor_accounts','password']
+    name_of_hospital = forms.CharField()
+    house_no = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'House No'}))
+    street = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Street'}))
+    area = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Locality / Area / Pada'}))
+    city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City / Town / Village'}))
+    taluka = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Taluka'}))
+    district = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'District'}))
+    state = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'State'}))
+    pincode = forms.CharField(max_length=6, validators=[MinLengthValidator(6)], widget=forms.TextInput(attrs={'placeholder':'Pin Code'}))
+    country = CountryField()
+    owner_name = forms.CharField()
+    phone_no = forms.CharField(required=False, validators=[MinLengthValidator(10)], max_length=10,error_messages={'required':'Enter a Valid Phone Number'})
+    email = forms.EmailField(required=False,error_messages={'required':'Enter a Valid Email Address'})
+    no_of_doctor_accounts = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'id':'pass'}),required=False)
+    payment = forms.CharField(required=False)
+    usecode = forms.CharField(required=False)
+    class Meta:
+        model = CustomUser
+        fields = ['payment','usecode','name_of_hospital','house_no','street','area','city','taluka','district','state','pincode','country','owner_name','phone_no','email','no_of_doctor_accounts','password']
 
 class NursingHomeForm(ModelForm):
-	name_of_nursing_home = forms.CharField()
-	house_no = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'House No'}))
-	street = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Street'}))
-	area = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Locality / Area / Pada'}))
-	city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City / Town / Village'}))
-	taluka = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Taluka'}))
-	district = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'District'}))
-	state = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'State'}))
-	pincode = forms.CharField(max_length=6, validators=[MinLengthValidator(6)], widget=forms.TextInput(attrs={'placeholder':'Pin Code'}))
-	country = CountryField()
-	owner_name = forms.CharField()
-	phone_no = forms.CharField(required=False,max_length=10,validators=[MinLengthValidator(10)],error_messages={'required':'Enter a Valid Phone Number'})
-	email = forms.EmailField(required=False,error_messages={'required':'Enter a Valid Email Address'})
-	payment = forms.CharField(required=False)
-	usecode = forms.CharField(required=False)
-	no_of_doctor_accounts = forms.CharField()
-	password = forms.CharField(widget=forms.PasswordInput(attrs={'id':'pwword'}),required=False)
-	class Meta:
-		model = CustomUser
-		fields = ['payment','usecode','name_of_nursing_home','house_no','street','area','city','taluka','district','state','pincode','country','owner_name','phone_no','email','no_of_doctor_accounts','password']
+    name_of_nursing_home = forms.CharField()
+    house_no = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'House No'}))
+    street = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Street'}))
+    area = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Locality / Area / Pada'}))
+    city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City / Town / Village'}))
+    taluka = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Taluka'}))
+    district = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'District'}))
+    state = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'State'}))
+    pincode = forms.CharField(max_length=6, validators=[MinLengthValidator(6)], widget=forms.TextInput(attrs={'placeholder':'Pin Code'}))
+    country = CountryField()
+    owner_name = forms.CharField()
+    phone_no = forms.CharField(required=False,max_length=10,validators=[MinLengthValidator(10)],error_messages={'required':'Enter a Valid Phone Number'})
+    email = forms.EmailField(required=False,error_messages={'required':'Enter a Valid Email Address'})
+    payment = forms.CharField(required=False)
+    usecode = forms.CharField(required=False)
+    no_of_doctor_accounts = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'id':'pwword'}),required=False)
+    class Meta:
+        model = CustomUser
+        fields = ['payment','usecode','name_of_nursing_home','house_no','street','area','city','taluka','district','state','pincode','country','owner_name','phone_no','email','no_of_doctor_accounts','password']
 
 
 class UserLoginForm(forms.Form):
-	username = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Email / Phone No.'}))
-	password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Password'}))
+    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Email / Phone No.'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Password'}))
 
 
 class SecurityQuestionsForm(ModelForm):
-	question = forms.CharField(label='question', widget=forms.TextInput(attrs={'placeholder':'Security Question'}))
-	answer = forms.CharField(label='answer', widget=forms.TextInput(attrs={'placeholder':'Answer'}))
-	class Meta:
-		model = SecurityQuestions
-		fields = ['question','answer']
+    question = forms.CharField(label='question', widget=forms.TextInput(attrs={'placeholder':'Security Question'}))
+    answer = forms.CharField(label='answer', widget=forms.TextInput(attrs={'placeholder':'Answer'}))
+    class Meta:
+        model = SecurityQuestions
+        fields = ['question','answer']
 
 class PasswordForm(forms.Form):
-	password = forms.CharField(disabled=True, widget=forms.PasswordInput(attrs={'placeholder':'New Password'}))
-	password_confirm = forms.CharField(disabled=True, widget=forms.PasswordInput(attrs={'placeholder':'Re-enter Password'}))
+    password = forms.CharField(disabled=True, widget=forms.PasswordInput(attrs={'placeholder':'New Password'}))
+    password_confirm = forms.CharField(disabled=True, widget=forms.PasswordInput(attrs={'placeholder':'Re-enter Password'}))
 
 class PasswordVerificationAdminForm(forms.Form):
-	email = forms.CharField(disabled=False, label='email', widget=forms.TextInput(attrs={'placeholder':'Registered Email','id': 'email'}))
-	phone_no = forms.CharField(disabled=True,label='phone_no', widget=forms.TextInput(attrs={'placeholder':'Enter OTP','id': 'otptxt'}))
+    email = forms.CharField(disabled=False, label='email', widget=forms.TextInput(attrs={'placeholder':'Registered Email','id': 'email'}))
+    phone_no = forms.CharField(disabled=True,label='phone_no', widget=forms.TextInput(attrs={'placeholder':'Enter OTP','id': 'otptxt'}))
 
 
 class PasswordVerificationForm(forms.Form):
-	question = forms.ModelChoiceField(disabled=True, queryset=SecurityQuestions.objects.all(), empty_label=None, widget=forms.Select(attrs={'class':'form-control','id': 'sectxt'}))
-	answer = forms.CharField(disabled=True, label='answer', widget=forms.TextInput(attrs={'placeholder':'Answer','id': 'anstxt'}))
-	phone_no = forms.CharField(disabled=True,label='phone_no', widget=forms.TextInput(attrs={'placeholder':'Enter OTP','id': 'otptxt'}))
+    question = forms.ModelChoiceField(disabled=True, queryset=SecurityQuestions.objects.all(), empty_label=None, widget=forms.Select(attrs={'class':'form-control','id': 'sectxt'}))
+    answer = forms.CharField(disabled=True, label='answer', widget=forms.TextInput(attrs={'placeholder':'Answer','id': 'anstxt'}))
+    phone_no = forms.CharField(disabled=True,label='phone_no', widget=forms.TextInput(attrs={'placeholder':'Enter OTP','id': 'otptxt'}))
 
 class ModuleMasterForm(ModelForm):
-	module_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Module Name'}))
-	module_code = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Module Code'}))
-	no_of_patients = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Number of Patients'}))
-	web_space = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Mb'}))
-	amount = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'in Rupees','id':'amount'}))
-	cgst = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'%', 'id':'cgst'}))
-	sgst = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'%', 'id':'sgst'}))
-	gst = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'%','id':'gst','onfocus':'sum()'}))
-	total_amount = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'in Rupees','id':'tot_amount','onfocus':'sum1()'}))
+    module_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Module Name'}))
+    module_code = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Module Code'}))
+    no_of_patients = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Number of Patients'}))
+    web_space = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Mb'}))
+    amount = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'in Rupees','id':'amount'}))
+    cgst = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'%', 'id':'cgst'}))
+    sgst = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'%', 'id':'sgst'}))
+    gst = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'%','id':'gst','onfocus':'sum()'}))
+    total_amount = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'in Rupees','id':'tot_amount','onfocus':'sum1()'}))
 
-	class Meta:
-		model = ModuleMaster
-		fields = ['module_name','module_code','no_of_patients','web_space','amount','cgst','sgst','gst','total_amount']
+    class Meta:
+        model = ModuleMaster
+        fields = ['module_name','module_code','no_of_patients','web_space','amount','cgst','sgst','gst','total_amount']
 
 
 class ContactForm(ModelForm):
-	name = forms.CharField()
-	phone_no = forms.CharField(required=False,max_length=10,validators=[MinLengthValidator(10)],error_messages={'required':'Enter a Valid Phone Number'})
-	email = forms.CharField(required=False,error_messages={'required':'Enter a Valid Email Address'})
-	message = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 5}))
+    name = forms.CharField()
+    phone_no = forms.CharField(required=False,max_length=10,validators=[MinLengthValidator(10)],error_messages={'required':'Enter a Valid Phone Number'})
+    email = forms.CharField(required=False,error_messages={'required':'Enter a Valid Email Address'})
+    message = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 5}))
 
-	class Meta:
-		model = Contact
-		fields = ['name','phone_no','email','message']
+    class Meta:
+        model = Contact
+        fields = ['name','phone_no','email','message']
 
 class AddServices(ModelForm):
-	add_onservices = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Add_on service'}),required=False)
-	add_on_servicescode = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Add-on Services Code'}),required=False)
-	amount = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'amount','id':'amount'}),required=False)
-	cgst = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'%','id':'cgst'}),required=False)
-	sgst = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'%','id':'sgst'}),required=False)
-	gst = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'%','id':'gst','onfocus':'sum()'}),required=False)
-	total_amount = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'in Rupees','id':'tot_amount','onfocus':'sum1()'}),required=False)
+    add_onservices = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Add_on service'}),required=False)
+    add_on_servicescode = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Add-on Services Code'}),required=False)
+    amount = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'amount','id':'amount'}),required=False)
+    cgst = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'%','id':'cgst'}),required=False)
+    sgst = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'%','id':'sgst'}),required=False)
+    gst = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'%','id':'gst','onfocus':'sum()'}),required=False)
+    total_amount = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'in Rupees','id':'tot_amount','onfocus':'sum1()'}),required=False)
 
-	class Meta:
-		model = AddOnServices
-		fields = ['add_onservices','add_on_servicescode','amount','cgst','sgst','gst','total_amount']
+    class Meta:
+        model = AddOnServices
+        fields = ['add_onservices','add_on_servicescode','amount','cgst','sgst','gst','total_amount']
 
 
 class pharamcy(ModelForm):
@@ -211,98 +211,98 @@ class pharamcy(ModelForm):
        fields = ['companyname','addresslineone','addresslinetwo','streetname','city','country','state','pincode','nationalhead','contactnumber','emailaddress','phonenumber','regionalhead','regionalcontactnumber','regionalemailaddress','regionalphonenumber','scientifichead','scientificcontactnumber','scientificemailaddress','scientificphonenumber']
 
 class IndivdualUserForm1(ModelForm):
-	title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Title'}))
-	first_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'First Name'}))
-	middle_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Middle Name'}))
-	last_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Last Name'}))
-	phone_no = forms.CharField(required=False, validators=[MinLengthValidator(10)],max_length=10,error_messages={'required':'Enter a Valid PhoneNumber'})
-	email = forms.EmailField(error_messages={'required':'Enter a Valid Email Address'},widget=forms.TextInput(attrs={'placeholder':'email'}),required=False)
-	password = forms.CharField(widget=forms.PasswordInput())
-	usecode = forms.CharField(required=False)
-	class Meta:
-		model = CustomUser
-		fields = ['title','first_name','middle_name','last_name','phone_no','email','password','usecode']
-	#def clean(self, *args,**kwargs):
-	#	email = self.cleaned_data['email']
-	#	if CustomUser.objects.filter(email=email).exists():
-	#		raise ValidationError("Email already exists")
-	#	return super(IndivdualUserForm, self).clean(*args, **kwargs)
+    title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Title'}))
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'First Name'}))
+    middle_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Middle Name'}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Last Name'}))
+    phone_no = forms.CharField(required=False, validators=[MinLengthValidator(10)],max_length=10,error_messages={'required':'Enter a Valid PhoneNumber'})
+    email = forms.EmailField(error_messages={'required':'Enter a Valid Email Address'},widget=forms.TextInput(attrs={'placeholder':'email'}),required=False)
+    password = forms.CharField(widget=forms.PasswordInput())
+    usecode = forms.CharField(required=False)
+    class Meta:
+        model = CustomUser
+        fields = ['title','first_name','middle_name','last_name','phone_no','email','password','usecode']
+    #def clean(self, *args,**kwargs):
+    #	email = self.cleaned_data['email']
+    #	if CustomUser.objects.filter(email=email).exists():
+    #		raise ValidationError("Email already exists")
+    #	return super(IndivdualUserForm, self).clean(*args, **kwargs)
 
 
 class IndivdualDoctorForm1(ModelForm):
-	doctor_options = (
-		('Select Type','Select Type'),
-		('DA','Allopathy'),
-		('DB','Ayurveda'),
-		('DC','Homoeopathy'),
-		('DD','Unani'),
-		('DE','Siddha'),
-		('DF','Junior Doctor'),
-		('DG','Front Desk'),
-		)
-	type_of_doctor = forms.ChoiceField(choices=doctor_options)
-	title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Title'}))
-	first_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'First Name'}))
-	middle_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Middle Name'}))
-	last_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Last Name'}))
-	phone_no = forms.CharField(required=False, validators=[MinLengthValidator(10)],max_length=10,error_messages={'required':'Enter Valid Phone Number'})
-	payment = forms.CharField(required=False)
-	usecode = forms.CharField(required=False)
-	email = forms.EmailField(error_messages={'required':'Enter a Valid Email Address'},widget=forms.TextInput(attrs={'placeholder':'email'}),required=False)
-	password = forms.CharField(widget=forms.PasswordInput(attrs={'id':'pwd1'}), validators=[MinLengthValidator(6)])
-	class Meta:
-		model = CustomUser
-		fields = ['type_of_doctor','title','first_name','middle_name','last_name','phone_no','payment','usecode','email','password']
+    doctor_options = (
+        ('Select Type','Select Type'),
+        ('DA','Allopathy'),
+        ('DB','Ayurveda'),
+        ('DC','Homoeopathy'),
+        ('DD','Unani'),
+        ('DE','Siddha'),
+        ('DF','Junior Doctor'),
+        ('DG','Front Desk'),
+        )
+    type_of_doctor = forms.ChoiceField(choices=doctor_options)
+    title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Title'}))
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'First Name'}))
+    middle_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Middle Name'}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Last Name'}))
+    phone_no = forms.CharField(required=False, validators=[MinLengthValidator(10)],max_length=10,error_messages={'required':'Enter Valid Phone Number'})
+    payment = forms.CharField(required=False)
+    usecode = forms.CharField(required=False)
+    email = forms.EmailField(error_messages={'required':'Enter a Valid Email Address'},widget=forms.TextInput(attrs={'placeholder':'email'}),required=False)
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'id':'pwd1'}), validators=[MinLengthValidator(6)])
+    class Meta:
+        model = CustomUser
+        fields = ['type_of_doctor','title','first_name','middle_name','last_name','phone_no','payment','usecode','email','password']
 
 
 class HospitalForm1(ModelForm):
-	name_of_hospital = forms.CharField()
-	street = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Street'}))
-	area = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Locality / Area / Pada'}))
-	city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City / Town / Village'}))
-	taluka = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Taluka'}))
-	district = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'District'}))
-	state = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'State'}))
-	pincode = forms.CharField(validators=[MinLengthValidator(10)],max_length=6,widget=forms.TextInput(attrs={'placeholder':'Pin Code'}))
-	country =CountryField(default='IN')
-	owner_name = forms.CharField()
-	phone_no = forms.CharField(required=False)
-	email = forms.EmailField(error_messages={'required':'Enter a Valid Email Address'},widget=forms.TextInput(attrs={'placeholder':'email'}),required=False)
-	no_of_doctor_accounts = forms.CharField()
-	password =forms.CharField(widget=forms.PasswordInput(attrs={'id':'password1'}), validators=[MinLengthValidator(6)])
-	payment = forms.CharField(required=False)
-	usecode = forms.CharField(required=False)
-	class Meta:
-		model = CustomUser
-		fields = ['payment','usecode','name_of_hospital','street','area','city','taluka','district','state','pincode','country','owner_name','phone_no','email','no_of_doctor_accounts','password']
+    name_of_hospital = forms.CharField()
+    street = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Street'}))
+    area = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Locality / Area / Pada'}))
+    city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City / Town / Village'}))
+    taluka = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Taluka'}))
+    district = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'District'}))
+    state = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'State'}))
+    pincode = forms.CharField(validators=[MinLengthValidator(10)],max_length=6,widget=forms.TextInput(attrs={'placeholder':'Pin Code'}))
+    country =CountryField(default='IN')
+    owner_name = forms.CharField()
+    phone_no = forms.CharField(required=False)
+    email = forms.EmailField(error_messages={'required':'Enter a Valid Email Address'},widget=forms.TextInput(attrs={'placeholder':'email'}),required=False)
+    no_of_doctor_accounts = forms.CharField()
+    password =forms.CharField(widget=forms.PasswordInput(attrs={'id':'password1'}), validators=[MinLengthValidator(6)])
+    payment = forms.CharField(required=False)
+    usecode = forms.CharField(required=False)
+    class Meta:
+        model = CustomUser
+        fields = ['payment','usecode','name_of_hospital','street','area','city','taluka','district','state','pincode','country','owner_name','phone_no','email','no_of_doctor_accounts','password']
 
 class NursingHomeForm1(ModelForm):
-	name_of_nursing_home = forms.CharField()
-	street = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Street'}))
-	area = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Locality / Area / Pada'}))
-	city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City / Town / Village'}))
-	taluka = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Taluka'}))
-	district = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'District'}))
-	state = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'State'}))
-	pincode = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Pin Code'}))
-	country = CountryField(default='IN')
-	owner_name = forms.CharField()
-	phone_no = forms.CharField(required=False, validators=[MinLengthValidator(10)],max_length=10,error_messages={'required':'Invalid Phone Number'})
-	email = forms.EmailField(error_messages={'required':'Enter a Valid Email Address'},widget=forms.TextInput(attrs={'placeholder':'email'}),required=False)
-	payment = forms.CharField(required=False)
-	usecode = forms.CharField(required=False)
-	no_of_doctor_accounts = forms.CharField()
-	password =forms.CharField(widget=forms.PasswordInput(attrs={'id':'pwd'}), validators=[MinLengthValidator(6)])
-	class Meta:
-		model = CustomUser
-		fields = ['payment','usecode','name_of_nursing_home','street','area','city','taluka','district','state','pincode','country','owner_name','phone_no','email','no_of_doctor_accounts','password']
+    name_of_nursing_home = forms.CharField()
+    street = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Street'}))
+    area = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Locality / Area / Pada'}))
+    city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City / Town / Village'}))
+    taluka = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Taluka'}))
+    district = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'District'}))
+    state = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'State'}))
+    pincode = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Pin Code'}))
+    country = CountryField(default='IN')
+    owner_name = forms.CharField()
+    phone_no = forms.CharField(required=False, validators=[MinLengthValidator(10)],max_length=10,error_messages={'required':'Invalid Phone Number'})
+    email = forms.EmailField(error_messages={'required':'Enter a Valid Email Address'},widget=forms.TextInput(attrs={'placeholder':'email'}),required=False)
+    payment = forms.CharField(required=False)
+    usecode = forms.CharField(required=False)
+    no_of_doctor_accounts = forms.CharField()
+    password =forms.CharField(widget=forms.PasswordInput(attrs={'id':'pwd'}), validators=[MinLengthValidator(6)])
+    class Meta:
+        model = CustomUser
+        fields = ['payment','usecode','name_of_nursing_home','street','area','city','taluka','district','state','pincode','country','owner_name','phone_no','email','no_of_doctor_accounts','password']
 
 
 
 class CouponForm(ModelForm):
-	class Meta:
-		model = Coupon
-		fields = ['code','count_value','startDate','endDate','profileChoices']
+    class Meta:
+        model = Coupon
+        fields = ['code','count_value','startDate','endDate','profileChoices']
 
 
 class EventregisteruserForm(ModelForm):
@@ -345,6 +345,7 @@ class Eventregistertable(forms.ModelForm):
     )
     eventtype = forms.ChoiceField(choices=EVENT_OPTION) #format='%Y-%m-%d %H:%M:%S',
     created_on = forms.DateTimeField(widget=forms.DateTimeInput(format='%Y-%m-%dT%H:%M',attrs={'type': 'datetime-local'}))
+    ends_on = forms.DateTimeField(widget=forms.DateTimeInput(format='%Y-%m-%dT%H:%M',attrs={'type': 'datetime-local'}))
     Chairpersons = forms.CharField(widget=forms.TextInput(),required=False)
     # name = forms.CharField(widget=forms.TextInput(), required=False)
     mobilenumber = forms.CharField(max_length=10, min_length=10, widget=forms.TextInput(), required=False)
@@ -355,7 +356,7 @@ class Eventregistertable(forms.ModelForm):
     ContactPersonanme = forms.CharField(widget=forms.TextInput(), required=False)
     Cmobile = forms.CharField(max_length=10, min_length=10, widget=forms.TextInput(), required=False)
     Cemail = forms.EmailField(required=False)
-    organisedby = forms.CharField(widget=forms.TextInput(), required=False)
+    organizedby = forms.CharField(widget=forms.TextInput(), required=False)
     sponserby = forms.CharField(widget=forms.TextInput(), required=False)
     CHOICES = (
         ('Yes', 'Yes'), ('No', 'NO'),
@@ -375,6 +376,6 @@ class Eventregistertable(forms.ModelForm):
 
     class Meta:
         model = Webregister
-        fields = ['eventtitle', 'targetaudiance', 'eventtype', 'created_on','Chairpersons','mobilenumber',
+        fields = ['eventtitle', 'targetaudiance', 'eventtype', 'created_on','ends_on','Chairpersons','mobilenumber',
                   'email', 'Moderatorname', 'mmobile', 'memail', 'ContactPersonanme', 'Cmobile', 'Cemail',
-                  'organisedby','sponserby','Registerationrequired', 'paymentrequired', 'partnerrequired'] # , 'name','sponserby','end_on',
+                  'organizedby','sponserby','Registerationrequired', 'paymentrequired', 'partnerrequired'] # , 'name','sponserby','end_on',

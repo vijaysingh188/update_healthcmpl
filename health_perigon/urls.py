@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.urls import path
-from accounts.views import (user_login,sign_up,home, password_reset_admin, change_password_admin, send_otp_admin, laboratory_edit,
+from django.conf.urls.static import static
+from django.conf.urls import url,include
+from django.conf import settings
+from accounts.views import (sign_up,user_login,home,show_events, password_reset_admin, change_password_admin, send_otp_admin, laboratory_edit,
 laboratory_update, laboratory_insertion, verify_otp_admin, login_view_admin, login_view, logout_view, 
 contact, activate_account, register, password_reset, contact_master, change_password, send_otp, 
 verify_otp, existing_module_master, create_module_master, edit_module_master, destroy_module_master, 
@@ -14,6 +17,7 @@ urlpatterns = [
     path('',home, name="home"),
     path('sign_up/',sign_up, name="sign_up"),
     path('user_login/',user_login, name="user_login"),
+    path('show_events/',show_events, name="show_events"),
     # path('password_reset_user/',password_reset_user, name="password_reset_user"),password_reset_user,
     path('contact/',contact, name="contact"),
     path('register/',register, name="register"),
@@ -84,4 +88,10 @@ urlpatterns = [
     path('partner_and_event_register/',partner_and_event_register,name="partner_and_event_register"),
     path('Add_streaming_link',Add_streaming_link, name="Add_streaming_link"),
 
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns =[
+        url(r'^__debug__/',include(debug_toolbar.urls))
+    ] + urlpatterns

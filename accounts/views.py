@@ -28,7 +28,41 @@ from django.contrib.auth.forms import UserCreationForm
 #from django.contrib.auth.forms import SetPasswordForm
 from django.http import HttpResponseRedirect
 
+def show_events(request):
+    objects = Eventregisterationuser.objects.filter(webregister__created_on__gt=datetime.datetime.now())
+    past_event = Eventregisterationuser.objects.filter(webregister__ends_on__lt=datetime.datetime.now())
 
+    context ={
+        'objects':objects,
+        'past_event':past_event,
+    }
+    print(context,'context')
+
+    return render(request,'show_events.html',context)
+
+# def show_events(request):
+#     objects = Webregister.objects.filter(created_on__gt=datetime.datetime.now()).values()
+#     print(objects,'objects')
+#     for obj in objects:
+#         insta= obj['id']
+#         curr_obj = Eventregisterationuser.objects.get(webregister=insta)
+#         print(curr_obj,'curr_obj')
+#         print(curr_obj.header_eventimage)
+#
+#     past_event = Webregister.objects.filter(ends_on__lt=datetime.datetime.now()).values()
+#     for obj in past_event:
+#         insta = obj['id']
+#         past_obj = Eventregisterationuser.objects.get(webregister=insta)
+#
+#     context={
+#          'objects': objects,
+#          'past_event':past_event,
+#          'curr_obj':curr_obj,
+#          'past_obj':past_obj,
+#
+#      }
+#
+#     return render(request, 'show_events.html',context)
 
 @csrf_exempt
 def sign_up(request):
@@ -47,6 +81,38 @@ def sign_up(request):
     return render(request,'home_user.html',{'form':form})
 
 
+@csrf_exempt
+def sign_up(request):
+
+    if request.method == "POST":
+        if request.POST.get('submit') == 'signup':
+            form = SignUpForm(request.POST)
+            print(request.POST,'post')
+            print("before validation", form.errors)
+            if form.is_valid():
+
+                form.save()
+                print("done with signup")
+                messages.success(request, 'Form submitted sucesfuly')
+            else:
+                print("else")
+
+        elif request.POST.get('submit') == 'login':
+            form_login = AuthenticationForm(request.POST)
+            print(form_login.errors)
+            if form_login.is_valid():
+                username = form_login.cleaned_data['username']
+                password = form_login.cleaned_data['password']
+                user = authenticate(username=username, password=password)
+                if user is not None and user.is_active:
+                    login(request, user)
+                    return redirect('/')
+
+    else:
+        form = SignUpForm()
+        form_login = AuthenticationForm(request.POST)
+
+    return render(request,'home_user.html',{'form':form,'form_login':form_login})
 
 @csrf_exempt
 def user_login(request):
