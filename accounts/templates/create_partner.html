@@ -522,7 +522,7 @@ span.switch-label:after {
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <form class="needs-validation" method="post" enctype="multipart/form-data">
+                                    <form class="needs-validation some_form" method="post" enctype="multipart/form-data">
                                         <div class="row">
 
                                         <div class="col-md-4 mb-3">
@@ -740,18 +740,18 @@ span.switch-label:after {
                                  <div class="col-md-6 text-justify">
 
 
-                                      Header <input type='file' name="header_eventimage" id="header_eventimage" onchange="GetFileSize()" />
+                                      Header <input type='file'  name="header_eventimage" id="header_eventimage" />
 									  <br><span style="font-size:11px;color:#cd2628"> (Upload an image of .png or .jpeg with 1000*100 Pixel and maximum size of 1MB)</span>
                                    <hr>
 
 
                                  </div>
-                                <p id="fp"></p>
+<!--                                <p id="fp"></p>-->
 
                                  <div class="col-md-6 text-justify">
 
 
-									 Footer <input type='file' name="footer_eventimage" id="footer_eventimage" onchange="readURL(this);" />
+									 Footer <input type='file' name="footer_eventimage" id="footer_eventimage" />
 									 <br>
 									 <span style="font-size:11px;color:#cd2628"> (Upload an image of .png or .jpeg with 1000*100 Pixel and maximum 	size of 1MB)</span>
 									 <hr>
@@ -769,7 +769,7 @@ span.switch-label:after {
 
 
 
-                                Header &nbsp; <input type='file' name="streaming_header" id="streaming_header"  onchange="readURL(this);" /><br>
+                                Header &nbsp; <input type='file' name="streaming_header" id="streaming_header"  /><br>
 								<span style="font-size:11px;color:#cd2628"> (Upload an image of .png or .jpeg with 1000*100 Pixel and maximum size of 1MB)</span>
 								<hr>
 
@@ -778,7 +778,7 @@ span.switch-label:after {
                                 <div class="col-md-4 text-justify">
 
 
-                            Left Panel &nbsp; <input style="width:70%;" type='file' name="streaming_leftpanel" id="streaming_leftpanel" onchange="readURL(this);" />
+                            Left Panel &nbsp; <input style="width:70%;" type='file' name="streaming_leftpanel" id="streaming_leftpanel"  />
 						   <br><span style="font-size:11px;color:#cd2628"> (Upload image of .png or .jpeg format with 200*700 Pixel and maximum size of 1MB)</span>
 								<hr>
 
@@ -787,7 +787,7 @@ span.switch-label:after {
                                 <div class="col-md-4 text-justify">
 
 
-                              Right Panel &nbsp; <input style="width:70%;" type='file' name="streaming_rightpanel" id="streaming_rightpanel" onchange="readURL(this);" /><br>
+                              Right Panel &nbsp; <input style="width:70%;" type='file' name="streaming_rightpanel" id="streaming_rightpanel"  /><br>
 							  <span style="font-size:11px;color:#cd2628"> (Upload image of .png or .jpeg format with 200*700 Pixel and maximum size of 1MB)</span>
 								<hr>
 
@@ -926,26 +926,47 @@ given frequency)</span></label>
 
 		</script>
 
-<!--<script>-->
-<!--    function GetFileSize() {-->
-<!--        var fi = document.getElementById('header_eventimage'); // GET THE FILE INPUT.-->
 
-<!--        // VALIDATE OR CHECK IF ANY FILE IS SELECTED.-->
-<!--        if (fi.files.length > 0) {-->
-<!--            // RUN A LOOP TO CHECK EACH SELECTED FILE.-->
-<!--            for (var i = 0; i <= fi.files.length - 1; i++) {-->
+<script>
 
-<!--                var fsize = fi.files.item(i).size;-->
+$('#header_eventimage').bind('change', function() {
 
-<!--                document.getElementById('fp').innerHTML =-->
-<!--                    document.getElementById('fp').innerHTML + '<br /> ' +-->
-<!--                        '<b>' + Math.round((fsize / 1024)) + '</b> KB';-->
-<!--                        alert(fsize);-->
+    var ht = $(this).height()
+     var wt = $(this).width()
+     console.log(ht,wt)
 
-<!--            }-->
-<!--        }-->
-<!--    }-->
-<!--</script>-->
+
+
+
+	var ext = $('#header_eventimage').val().split('.').pop().toLowerCase();
+	alert(ext);
+
+	if (ext == 'PNG' || ext == 'png' || ext == 'jpg' || ext == 'jpeg') {
+
+		var ext = (this.files[0].size);
+		if (ext < 80000) {
+			console.log(ext);
+			if (ht < 100 && wt < 1000){
+
+		       console.log("go to go");
+
+                }
+            else{
+            alert("image should be configured");
+            }
+
+
+		}
+
+		else{
+		    alert("file is too large");
+		}
+	}
+	else{
+        alert("image should be format of PNG,png,jpeg,jpg");
+    }
+});
+</script>
   {% endblock %}
 
 

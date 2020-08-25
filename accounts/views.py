@@ -63,21 +63,6 @@ def event_register_form(request,module_id):
     return render(request,'home_user.html',{'form':form,'object':object})
 
 
-# @csrf_exempt
-# def sign_up(request):
-#
-#     if request.method == "POST":
-#         form = SignUpForm(request.POST)
-#         print(request.POST,'post')
-#         print("before validation", form.errors)
-#         if form.is_valid():
-#
-#             form.save()
-#             print("done with signup")
-#             messages.success(request, 'Form submitted sucessfully')
-#     else:
-#         form = SignUpForm()
-#     return render(request,'home_user.html',{'form':form})
 
 
 @csrf_exempt
@@ -1270,6 +1255,7 @@ def Add_streaming_link(request):
     print(query,'query')
     if query == True:
         query = Webregister.objects.filter(eventtitle=eventtitle,eventtype=eventtype,targetaudiance=targetaudiance).update(streaming_link=streaming_link)
+        return JsonResponse({"success": True}, status=200)
     else:
         return JsonResponse({"success": False}, status=400)
 
