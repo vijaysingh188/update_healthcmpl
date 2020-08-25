@@ -30,8 +30,10 @@ from django.http import HttpResponseRedirect
 
 def show_events(request):
     objects = Eventregisterationuser.objects.filter(webregister__created_on__gt=datetime.datetime.now())
+
     print(objects,'objects')
     past_event = Eventregisterationuser.objects.filter(webregister__ends_on__lt=datetime.datetime.now())
+    print(past_event,'past_event')
 
     context ={
         'objects':objects,
@@ -42,7 +44,7 @@ def show_events(request):
     return render(request,'show_events.html',context)
 @csrf_exempt
 def event_register_form(request,module_id):
-    module = Webregister.objects.get(id=module_id) #42
+    module = Webregister.objects.get(id=module_id)
     object = Eventregisterationuser.objects.get(webregister=module)
     print(module,'module')
     print(object,'object')
@@ -1295,94 +1297,6 @@ def Coupon_to_create(request):
             return JsonResponse({"success": False}, status=400)
     return JsonResponse({"success": False}, status=400)
 
-@csrf_exempt
-def partner_visibility(request):
-
-    if request.method == 'POST':
-
-        form = EventregisteruserForm(request.POST, request.FILES) #, instance=obj
-        if form.is_valid():
-
-            header_eventimage = form.cleaned_data.get('header_eventimage')
-            footer_eventimage = form.cleaned_data.get('footer_eventimage')
-            streaming_header = form.cleaned_data.get('streaming_header')
-            streaming_leftpanel = form.cleaned_data.get('streaming_leftpanel')
-            streaming_rightpanel = form.cleaned_data.get('streaming_rightpanel')
-
-
-            types = ['.jpg', '.png', '.jpeg','.PNG']
-
-            import pathlib
-            if header_eventimage:
-                a = pathlib.Path(str(header_eventimage)).suffix
-
-                if a not in types:
-                    return redirect('/partner_visibility',
-                                    messages.error(request, 'Please proper format for header_eventimage', 'alert-danger'))
-
-                if header_eventimage:
-                    if header_eventimage.size > 1000 * 100:  # 41937
-                        # print("header_eventimage.size", header_eventimage.size)
-                        return redirect('/partner_visibility', messages.error(request, 'Images should have proper configuration for header_eventimage', 'alert-danger'))
-
-            if footer_eventimage:
-                b = pathlib.Path(str(footer_eventimage)).suffix
-
-                if b not in types:
-                    return redirect('/partner_visibility',
-                                    messages.error(request, 'Please proper format for footer_eventimage', 'alert-danger'))
-
-                if footer_eventimage:
-                    if footer_eventimage.size > 1000 * 100:  # 41937
-                        return redirect('/partner_visibility', messages.error(request, 'Images should have proper configuration for footer_eventimage ', 'alert-danger'))
-
-            if streaming_header:
-                c = pathlib.Path(str(streaming_header)).suffix
-
-                if c not in types:
-                    return redirect('/partner_visibility',
-                                    messages.error(request, 'Please proper format for streaming_header', 'alert-danger'))
-
-                if streaming_header:
-                    if streaming_header.size > 1000 * 100:  # 41937
-                        return redirect('/partner_visibility', messages.error(request, 'Images should have proper configuration for streaming_header', 'alert-danger'))
-
-            if streaming_leftpanel:
-                d = pathlib.Path(str(streaming_leftpanel)).suffix
-
-                if d not in types:
-                    return redirect('/partner_visibility',
-                                    messages.error(request, 'Please proper format for streaming_leftpanel', 'alert-danger'))
-
-                if streaming_leftpanel:
-                    if streaming_leftpanel.size > 700 * 200:  # 41937
-                        return redirect('/partner_visibility', messages.error(request, 'Images should have proper configuration for streaming_leftpanel', 'alert-danger'))
-            if streaming_rightpanel:
-                e = pathlib.Path(str(streaming_rightpanel)).suffix
-
-                if e not in types:
-                    return redirect('/partner_visibility',
-                                    messages.error(request, 'Please proper format for streaming_leftpanel', 'alert-danger'))
-
-                if streaming_rightpanel:
-                    if streaming_rightpanel.size > 700 * 200:  # 41937
-                        return redirect('/partner_visibility', messages.error(request, 'Images should have proper configuration for streaming_rightpanel', 'alert-danger'))
-
-
-
-            if form.save():
-
-                return redirect('/partner_visibility',
-                                messages.success(request, 'Event registered successfully.', 'alert-success'))
-            else:
-                return redirect('/partner_visibility', messages.error(request, 'Images should have proper configuration', 'alert-danger'))
-
-        else:
-            return redirect('/partner_visibility', messages.error(request, 'visibilityis not valid', 'alert-danger'))
-    else:
-
-        form = EventregisteruserForm()
-        return render(request, 'partner_visibility.html', {'form': form})
 
 @csrf_exempt
 def event_visibility(request):
@@ -1584,7 +1498,7 @@ def partner_and_event_register(request):
 
                 form1.save()
                 return redirect('/partner_and_event_register',
-                                messages.success(request, 'visibility is created successfully.', 'alert-success'))
+                                messages.success(request, 'Event registered successfully..', 'alert-success'))
 
 
             return redirect('/partner_and_event_register',
@@ -1597,110 +1511,92 @@ def partner_and_event_register(request):
         form1 = EventregisteruserForm()
         return render(request,'create_partner.html', {'form': form,'form1':form1})
 
-# @csrf_exempt
-# def partner_and_event_register(request):
-# 	if request.method == 'POST':
-# 		created_on = request.POST.get('created_on')
-# 		print(created_on,'created_on') #2020-08-22T18:16 created_on
-#
-# 		form = Eventregistertable(request.POST)
-# 		if form.is_valid():
-# 			form.save()
-# 			aa = Webregister.objects.latest('id')
-# 			obj = Eventregisterationuser.objects.create(webregister=aa)
-# 			form1 = EventregisteruserForm(request.POST, request.FILES, instance=obj)
-#
-# 			if form1.is_valid():
-# 				print("im here")
-# 				header_eventimage = form.cleaned_data.get('header_eventimage')
-# 				print(header_eventimage,'header_eventimage')
-# 				footer_eventimage = form.cleaned_data.get('footer_eventimage')
-# 				streaming_header = form.cleaned_data.get('streaming_header')
-# 				streaming_leftpanel = form.cleaned_data.get('streaming_leftpanel')
-# 				streaming_rightpanel = form.cleaned_data.get('streaming_rightpanel')
-# 				types = ['.jpg', '.png', '.jpeg', '.PNG']
-#
-# 				import pathlib
-# 				if header_eventimage:
-# 					print("yes")
-# 					a = pathlib.Path(str(header_eventimage)).suffix
-#
-# 					if a not in types:
-# 						return redirect('/partner_and_event_register',
-# 										messages.error(request, 'Please proper format for header_eventimage','alert-danger'))
-# 						if header_eventimage:
-# 							if header_eventimage.size > 1000 * 100:  # 41937
-# 								return redirect("/partner_and_event_register", messages.error(request, 'Images should have proper configuration for footer_eventimage ', 'alert-danger'))
-#
-# 					if footer_eventimage:
-# 						b = pathlib.Path(str(footer_eventimage)).suffix
-#
-# 						if b not in types:
-# 							return redirect('/partner_and_event_register',
-# 											messages.error(request, 'Please proper format for footer_eventimage',
-# 														   'alert-danger'))
-#
-# 						if footer_eventimage:
-# 							if footer_eventimage.size > 1000 * 100:  # 41937
-# 								return redirect('/partner_and_event_register', messages.error(request,
-# 																					  'Images should have proper configuration for footer_eventimage ',
-# 																					  'alert-danger'))
-#
-# 					if streaming_header:
-# 						c = pathlib.Path(str(streaming_header)).suffix
-#
-# 						if c not in types:
-# 							return redirect('/partner_and_event_register',
-# 											messages.error(request, 'Please proper format for streaming_header',
-# 														   'alert-danger'))
-#
-# 						if streaming_header:
-# 							if streaming_header.size > 1000 * 100:  # 41937
-# 								return redirect('/partner_and_event_register', messages.error(request,
-# 																					  'Images should have proper configuration for streaming_header',
-# 																					  'alert-danger'))
-#
-# 					if streaming_leftpanel:
-# 						d = pathlib.Path(str(streaming_leftpanel)).suffix
-#
-# 						if d not in types:
-# 							return redirect('/partner_and_event_register',
-# 											messages.error(request, 'Please proper format for streaming_leftpanel',
-# 														   'alert-danger'))
-#
-# 						if streaming_leftpanel:
-# 							if streaming_leftpanel.size > 200 * 700:  # 41937
-# 								return redirect('/partner_and_event_register', messages.error(request,
-# 																					  'Images should have proper configuration for streaming_leftpanel',
-# 																					  'alert-danger'))
-# 					if streaming_rightpanel:
-# 						e = pathlib.Path(str(streaming_rightpanel)).suffix
-#
-# 						if e not in types:
-# 							return redirect('/partner_and_event_register',
-# 											messages.error(request, 'Please proper format for streaming_leftpanel',
-# 														   'alert-danger'))
-#
-# 						if streaming_rightpanel:
-# 							if streaming_rightpanel.size > 200 * 700:  # 41937
-# 								return redirect('/partner_and_event_register', messages.error(request,
-# 																					  'Images should have proper configuration for streaming_rightpanel',
-# 																					  'alert-danger'))
-#
-#
-#
-# 				form1.save()
-# 				return redirect('/partner_and_event_register',
-# 								messages.success(request, 'visibility is created successfully.', 'alert-success'))
-#
-#
-# 			return redirect('/partner_and_event_register',
-# 								messages.success(request, 'Event is created successfully.', 'alert-success'))
-#
-# 		else:
-# 			return redirect('/partner_and_event_register', messages.error(request, 'Form is not valid', 'alert-danger'))
-# 	else:
-# 		form = Eventregistertable()
-# 		form1 = EventregisteruserForm()
-# 		return render(request,'create_partner.html', {'form': form,'form1':form1})
 
+@csrf_exempt
+def partner_visibility(request):
+
+    if request.method == 'POST':
+
+        form = EventregisteruserForm(request.POST, request.FILES) #, instance=obj
+        if form.is_valid():
+
+            header_eventimage = form.cleaned_data.get('header_eventimage')
+            footer_eventimage = form.cleaned_data.get('footer_eventimage')
+            streaming_header = form.cleaned_data.get('streaming_header')
+            streaming_leftpanel = form.cleaned_data.get('streaming_leftpanel')
+            streaming_rightpanel = form.cleaned_data.get('streaming_rightpanel')
+
+
+            types = ['.jpg', '.png', '.jpeg','.PNG']
+
+            import pathlib
+            if header_eventimage:
+                a = pathlib.Path(str(header_eventimage)).suffix
+
+                if a not in types:
+                    return redirect('/partner_visibility',
+                                    messages.error(request, 'Please proper format for header_eventimage', 'alert-danger'))
+
+                if header_eventimage:
+                    if header_eventimage.size > 1000 * 100:  # 41937
+                        # print("header_eventimage.size", header_eventimage.size)
+                        return redirect('/partner_visibility', messages.error(request, 'Images should have proper configuration for header_eventimage', 'alert-danger'))
+
+            if footer_eventimage:
+                b = pathlib.Path(str(footer_eventimage)).suffix
+
+                if b not in types:
+                    return redirect('/partner_visibility',
+                                    messages.error(request, 'Please proper format for footer_eventimage', 'alert-danger'))
+
+                if footer_eventimage:
+                    if footer_eventimage.size > 1000 * 100:  # 41937
+                        return redirect('/partner_visibility', messages.error(request, 'Images should have proper configuration for footer_eventimage ', 'alert-danger'))
+
+            if streaming_header:
+                c = pathlib.Path(str(streaming_header)).suffix
+
+                if c not in types:
+                    return redirect('/partner_visibility',
+                                    messages.error(request, 'Please proper format for streaming_header', 'alert-danger'))
+
+                if streaming_header:
+                    if streaming_header.size > 1000 * 100:  # 41937
+                        return redirect('/partner_visibility', messages.error(request, 'Images should have proper configuration for streaming_header', 'alert-danger'))
+
+            if streaming_leftpanel:
+                d = pathlib.Path(str(streaming_leftpanel)).suffix
+
+                if d not in types:
+                    return redirect('/partner_visibility',
+                                    messages.error(request, 'Please proper format for streaming_leftpanel', 'alert-danger'))
+
+                if streaming_leftpanel:
+                    if streaming_leftpanel.size > 700 * 200:  # 41937
+                        return redirect('/partner_visibility', messages.error(request, 'Images should have proper configuration for streaming_leftpanel', 'alert-danger'))
+            if streaming_rightpanel:
+                e = pathlib.Path(str(streaming_rightpanel)).suffix
+
+                if e not in types:
+                    return redirect('/partner_visibility',
+                                    messages.error(request, 'Please proper format for streaming_leftpanel', 'alert-danger'))
+
+                if streaming_rightpanel:
+                    if streaming_rightpanel.size > 700 * 200:  # 41937
+                        return redirect('/partner_visibility', messages.error(request, 'Images should have proper configuration for streaming_rightpanel', 'alert-danger'))
+
+
+
+            if form.save():
+
+                return redirect('/partner_visibility',
+                                messages.success(request, 'Event registered successfully.', 'alert-success'))
+            else:
+                return redirect('/partner_visibility', messages.error(request, 'Images should have proper configuration', 'alert-danger'))
+
+        else:
+            return redirect('/partner_visibility', messages.error(request, 'Event is not valid', 'alert-danger'))
+    else:
+
+        form = EventregisteruserForm()
+        return render(request, 'partner_visibility.html', {'form': form})
