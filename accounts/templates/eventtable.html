@@ -2,7 +2,7 @@
 {% load widget_tweaks %}
 {% load static %}
 
-{% block title %} Subscription Master - Module Master {% endblock %}
+{% block title %} Subscription Master - Event Create {% endblock %}
 
 {% block body %}
 
@@ -105,42 +105,50 @@
 								    </div>
 								</div>
 							</div>
+
+							<p id="date_filter">
 							<div class="col-md-3">
 							    <div class="form-group ">
 								    <span class="color">Start Date</span>
 									<div class="input-group">
-									    <input type="date" class="form-control border-right-0 border" id="datetime_from" name="created_on" placeholder="dd/mm/yyyy">
+									    <input type="text" name="startDate" class="form-control border-right-0 border date_range_filter " id="datepicker_from" placeholder="dd/mm/yyyy">
 								    </div>
 								</div>
 							</div>
-							<div class="col-md-3">
+							<div class="col-md-3" >
+
 								<div class="form-group">
 									<span class="color">End Date</span>
 									<div class="input-group">
-										<input type="date" class="form-control border-right-0 border" id="datepicker_to" name="end_on" placeholder="dd/mm/yyyy">
+										<input type="text" name="endData" class="form-control border-right-0 border date_range_filter " id="datepicker_to" placeholder="dd/mm/yyyy">
 									</div>
 								</div>
 							</div>
+							</p>
+
+
 							<div class="col-md-3">
 							    <div class="form-group ">
 									<span class="color">&nbsp&nbsp</span>
 									<select class="custom-select d-block w-100" id="myDropDown" required>
-										<option value="">Select Module</option>
-										<option value="Webinar" id="Webinar">Webinar</option>
-										<option value="Conference" id="Conference">Conference</option>
+										<option value="">Target Audience</option>
 										<option value="HDC" id="HDC">HDC</option>
-										<option value="Individual" id="Individual">Individual</option>
+										<option value="Individual" id="Individual">Individual
+										<option value="Both" id="Both">Both</option>
 
 									</select>
 								</div>
 							</div>
 						</div>
+
 						<div class="row">
 							<div class="col-md-12">
 							    <div class="table-responsive">
 									<table class="table table-bordered" id="datatable">
 										<thead>
 											<tr>
+												<th style="display: none;">Date</th>
+												<th style="display: none;">Date</th>
 												<th>Title</th>
 												<th>Event Type</th>
 												<th>Target Audience</th>
@@ -155,7 +163,9 @@
 										<tbody>
                                         {% for module in module  %}
 											<tr>
-												<td class="nr">{{ module.eventtitle }}</td>
+												<td style="display: none;">{{ module.created_on|date:"Y/m/d"  }}</td>
+												<td style="display: none;">{{ module.ends_on|date:"Y/m/d"  }}</td>
+												<td >{{ module.eventtitle }}</td>
 												<td>{{ module.eventtype }}</td>
 												<td>{{ module.targetaudiance }}</td>
 												<td><a href="{% url 'registerlink' module.id %}" >{{module.register_link}}</td>
@@ -173,23 +183,11 @@
 
 											</tr>
 
-
-
-
-
                                             {% endfor %}
 										</tbody>
 									</table>
 								</div>
-<!--								<nav aria-label="...">-->
-<!--									<ul class="pagination pagination-sm justify-content-center">-->
-<!--										<li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Previous</a></li>-->
-<!--										<li class="page-item"><a class="page-link" href="#">1</a></li>-->
-<!--										<li class="page-item active"><a class="page-link" href="#">2 <span class="sr-only">(current)</span></a></li>-->
-<!--										<li class="page-item"><a class="page-link" href="#">3</a></li>-->
-<!--										<li class="page-item"><a class="page-link" href="#">Next</a></li>-->
-<!--									</ul>-->
-<!--								</nav>-->
+
                             </div>
 						</div>
 				    </div>
@@ -229,11 +227,7 @@
     </div>
     {% endblock %}
 {% block javascript %}
-<!--   <script>-->
-<!--		  $(function () {-->
-<!--			$('#myTab li:last-child a').tab('show')-->
-<!-- Webinar		  })-->
-<!--    </script>-->
+
 <script>
    	$(function() {
   var oTable = $('#datatable').DataTable({
@@ -248,11 +242,10 @@
     });
 
   $("#myDropDown").change(function (event) {
-            var x = $(this).val();
+			var x = $(this).val();
+			$('#datatable').dataTable().fnFilter(x);
+	});
 
-            $('#datatable').dataTable().fnFilter(x);
-
-        });
   $("#datepicker_from").datepicker({
     "onSelect": function(date) {
       minDateFilter = new Date(date).getTime();
@@ -304,14 +297,12 @@ $.fn.dataTableExt.afnFiltering.push(
     return true;
   }
 );
-
-
-
-
-
-</script>
+    </script>
 
 <script>
+
+
+
 $(document).ready(function() {
 	let formData = {
 		eventtitle: "",
@@ -330,9 +321,9 @@ $(document).ready(function() {
 			return $(this).text();
 
 		}).toArray();
-		formData.eventtitle = tdValue[0];
-		formData.eventtype = tdValue[1];
-		formData.targetaudiance = tdValue[2];
+		formData.eventtitle = tdValue[2];
+		formData.eventtype = tdValue[3];
+		formData.targetaudiance = tdValue[4];
 <!--		alert(formData.eventtitle);-->
 		console.log(formData)
 
@@ -360,8 +351,8 @@ $(document).ready(function() {
 
 				success: function(response) {
 					alert("Streaming link added succesfully");
-<!--					$("#streaming_link").fadeOut("slow");-->
-					$("#myBtnSave").fadeOut("slow");
+
+
 
 				}
 

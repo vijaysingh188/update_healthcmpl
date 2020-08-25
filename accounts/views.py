@@ -1373,7 +1373,7 @@ def partner_visibility(request):
             if form.save():
 
                 return redirect('/partner_visibility',
-                                messages.success(request, 'visibility is successfully submitted.', 'alert-success'))
+                                messages.success(request, 'Event registered successfully.', 'alert-success'))
             else:
                 return redirect('/partner_visibility', messages.error(request, 'Images should have proper configuration', 'alert-danger'))
 

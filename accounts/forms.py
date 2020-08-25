@@ -347,7 +347,6 @@ class Eventregistertable(forms.ModelForm):
     created_on = forms.DateTimeField(widget=forms.DateTimeInput(format='%Y-%m-%dT%H:%M',attrs={'type': 'datetime-local'}))
     ends_on = forms.DateTimeField(widget=forms.DateTimeInput(format='%Y-%m-%dT%H:%M',attrs={'type': 'datetime-local'}))
     Chairpersons = forms.CharField(widget=forms.TextInput(),required=False)
-    # name = forms.CharField(widget=forms.TextInput(), required=False)
     mobilenumber = forms.CharField(max_length=10, min_length=10, widget=forms.TextInput(), required=False)
     email = forms.EmailField(required=False)
     Moderatorname = forms.CharField(widget=forms.TextInput(), required=False)
