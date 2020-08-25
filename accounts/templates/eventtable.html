@@ -124,12 +124,13 @@
 							<div class="col-md-3">
 							    <div class="form-group ">
 									<span class="color">&nbsp&nbsp</span>
-									<select class="custom-select d-block w-100" id="" required>
+									<select class="custom-select d-block w-100" id="myDropDown" required>
 										<option value="">Select Module</option>
-										<option value="">Module1</option>
-										<option value="">Module2</option>
-										<option value="">Module3</option>
-										<option value="">Module4</option>
+										<option value="Webinar" id="Webinar">Webinar</option>
+										<option value="Conference" id="Conference">Conference</option>
+										<option value="HDC" id="HDC">HDC</option>
+										<option value="Individual" id="Individual">Individual</option>
+
 									</select>
 								</div>
 							</div>
@@ -212,7 +213,7 @@
                 <form action="" method="post">
                     <div class="input-group">
 
-  <input type="email" name="streaming_link" id="streaming_link" class="form-control" placeholder="Enter the streaming link">
+  <input type="text" name="streaming_link" id="streaming_link" class="form-control" placeholder="Enter the streaming link">
    <button style="line-height:1.2" id="myBtnSave" type="submit" value="sub" name="sub" class="btn btn-primary"><i class="fa fa-share"></i>ADD</button>
 </div>
 
@@ -231,7 +232,7 @@
 <!--   <script>-->
 <!--		  $(function () {-->
 <!--			$('#myTab li:last-child a').tab('show')-->
-<!--		  })-->
+<!-- Webinar		  })-->
 <!--    </script>-->
 <script>
    	$(function() {
@@ -246,6 +247,12 @@
         $('#datatable').dataTable().fnFilter(this.value);
     });
 
+  $("#myDropDown").change(function (event) {
+            var x = $(this).val();
+
+            $('#datatable').dataTable().fnFilter(x);
+
+        });
   $("#datepicker_from").datepicker({
     "onSelect": function(date) {
       minDateFilter = new Date(date).getTime();
@@ -301,26 +308,9 @@ $.fn.dataTableExt.afnFiltering.push(
 
 
 
-	$('#datatable').find('tr').change( function(data){
-	    	console.log(data);
-	        console.log("Clicked data");
-    		var row = $(this).find('td:eq(1)').text();
-    		console.log(row,"this is row");
 
-	    $.ajax({
-	      url: "{% url 'account_status_change' %}",
-	      type: "GET",
-		  data: {"id":row},
-	      headers: { "X-CSRFToken": "{{ csrf_token }}" }, // for csrf token
-	      success: function (data) {
-	      	// location.reload()
-	        // alert(data.result);
-	      },
-	    });
-	  })
 </script>
-<!-- module.eventtype -->
-<!-- module.targetaudiance-->
+
 <script>
 $(document).ready(function() {
 	let formData = {
