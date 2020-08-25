@@ -245,14 +245,14 @@ class Webregister(models.Model):
     def __str__(self):
         return str(self.pk)
 
-def register_link_create(sender, instance,*args, **kwargs):
-    # if not created:
-    if not instance.register_link:
-        # instance.register_link = "www.registerlink/"+str(Webregister.pk)
-        instance.register_link = "www.registerlink/" + str(instance.id)
-        print("its has now created")
-
-post_save.connect(register_link_create, sender=Webregister)
+# def register_link_create(sender,instance,*args, **kwargs): #created,
+#     # if not created:
+#     if not instance.register_link:
+#         # instance.register_link = "www.registerlink/"+str(Webregister.pk)
+#         instance.register_link = "www.registerlink/" + str(instance.id)
+#         print("its has now created")
+#
+# post_save.connect(register_link_create,sender=Webregister)
 
 class Eventregisterationuser(models.Model):
     webregister = models.ForeignKey(Webregister,on_delete=models.CASCADE)

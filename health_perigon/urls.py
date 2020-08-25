@@ -3,7 +3,7 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf.urls import url,include
 from django.conf import settings
-from accounts.views import (sign_up,user_login,home,show_events, password_reset_admin, change_password_admin, send_otp_admin, laboratory_edit,
+from accounts.views import (user_login,home,show_events,event_register_form, password_reset_admin, change_password_admin, send_otp_admin, laboratory_edit,
 laboratory_update, laboratory_insertion, verify_otp_admin, login_view_admin, login_view, logout_view, 
 contact, activate_account, register, password_reset, contact_master, change_password, send_otp, 
 verify_otp, existing_module_master, create_module_master, edit_module_master, destroy_module_master, 
@@ -15,8 +15,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('',home, name="home"),
-    path('sign_up/',sign_up, name="sign_up"),
+    # path('sign_up/',sign_up, name="sign_up"),sign_up,
     path('user_login/',user_login, name="user_login"),
+    path('event_register_form/<int:module_id>',event_register_form, name="event_register_form"),
     path('show_events/',show_events, name="show_events"),
     # path('password_reset_user/',password_reset_user, name="password_reset_user"),password_reset_user,
     path('contact/',contact, name="contact"),

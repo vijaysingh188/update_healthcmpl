@@ -30,6 +30,7 @@ from django.http import HttpResponseRedirect
 
 def show_events(request):
     objects = Eventregisterationuser.objects.filter(webregister__created_on__gt=datetime.datetime.now())
+    print(objects,'objects')
     past_event = Eventregisterationuser.objects.filter(webregister__ends_on__lt=datetime.datetime.now())
 
     context ={
@@ -39,33 +40,12 @@ def show_events(request):
     print(context,'context')
 
     return render(request,'show_events.html',context)
-
-# def show_events(request):
-#     objects = Webregister.objects.filter(created_on__gt=datetime.datetime.now()).values()
-#     print(objects,'objects')
-#     for obj in objects:
-#         insta= obj['id']
-#         curr_obj = Eventregisterationuser.objects.get(webregister=insta)
-#         print(curr_obj,'curr_obj')
-#         print(curr_obj.header_eventimage)
-#
-#     past_event = Webregister.objects.filter(ends_on__lt=datetime.datetime.now()).values()
-#     for obj in past_event:
-#         insta = obj['id']
-#         past_obj = Eventregisterationuser.objects.get(webregister=insta)
-#
-#     context={
-#          'objects': objects,
-#          'past_event':past_event,
-#          'curr_obj':curr_obj,
-#          'past_obj':past_obj,
-#
-#      }
-#
-#     return render(request, 'show_events.html',context)
-
 @csrf_exempt
-def sign_up(request):
+def event_register_form(request,module_id):
+    module = Webregister.objects.get(id=module_id) #42
+    object = Eventregisterationuser.objects.get(webregister=module)
+    print(module,'module')
+    print(object,'object')
 
     if request.method == "POST":
         form = SignUpForm(request.POST)
@@ -75,49 +55,37 @@ def sign_up(request):
 
             form.save()
             print("done with signup")
-            messages.success(request, 'Form submitted sucesfuly')
+            messages.success(request, 'Form submitted sucessfully')
     else:
         form = SignUpForm()
-    return render(request,'home_user.html',{'form':form})
+    return render(request,'home_user.html',{'form':form,'object':object})
 
 
-@csrf_exempt
-def sign_up(request):
+# @csrf_exempt
+# def sign_up(request):
+#
+#     if request.method == "POST":
+#         form = SignUpForm(request.POST)
+#         print(request.POST,'post')
+#         print("before validation", form.errors)
+#         if form.is_valid():
+#
+#             form.save()
+#             print("done with signup")
+#             messages.success(request, 'Form submitted sucessfully')
+#     else:
+#         form = SignUpForm()
+#     return render(request,'home_user.html',{'form':form})
 
-    if request.method == "POST":
-        if request.POST.get('submit') == 'signup':
-            form = SignUpForm(request.POST)
-            print(request.POST,'post')
-            print("before validation", form.errors)
-            if form.is_valid():
-
-                form.save()
-                print("done with signup")
-                messages.success(request, 'Form submitted sucesfuly')
-            else:
-                print("else")
-
-        elif request.POST.get('submit') == 'login':
-            form_login = AuthenticationForm(request.POST)
-            print(form_login.errors)
-            if form_login.is_valid():
-                username = form_login.cleaned_data['username']
-                password = form_login.cleaned_data['password']
-                user = authenticate(username=username, password=password)
-                if user is not None and user.is_active:
-                    login(request, user)
-                    return redirect('/')
-
-    else:
-        form = SignUpForm()
-        form_login = AuthenticationForm(request.POST)
-
-    return render(request,'home_user.html',{'form':form,'form_login':form_login})
 
 @csrf_exempt
 def user_login(request):
     if request.method == 'POST':
-        form_login = AuthenticationForm(request.POST)
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        print(username,password)
+
+        form_login = UserLoginForm(request.POST)
         print(form_login.errors)
         if form_login.is_valid():
 
@@ -128,6 +96,9 @@ def user_login(request):
             user = authenticate(username=username, password=password)
             if user is not None and user.is_active:
                 login(request,user)
+                print("everything is fine")
+
+                # return HttpResponseRedirect('sign_up')
                 return JsonResponse({"success": True}, status=200)
             else:
                 return JsonResponse({"success": False}, status=400)
@@ -136,25 +107,9 @@ def user_login(request):
 
             print("failed everything")
             print(form_login.non_field_errors)
-            form_login = AuthenticationForm()
-        return redirect('/partner_and_event_register/')
-# def user_login(request):
-#     form_login = AuthenticationForm(request.POST or None)
-#     if form_login.is_valid():
-#         username = form_login.cleaned_data['username']
-#         password = form_login.cleaned_data['password']
-#         user = authenticate(username=username, password=password)
-#         if user is not None and user.is_active:
-#             login(request,user)
-#             return JsonResponse({"success": True}, status=200)
-#         else:
-#             return JsonResponse({"success": False}, status=400)
-#     else:
-#
-#         print(form_login.errors)
-#         print(form_login.non_field_errors)
-#         form_login = AuthenticationForm()
-#     return redirect('/partner_and_event_register/')
+            form_login = UserLoginForm()
+        return redirect('/sign_up/')
+
 
 
 @csrf_exempt
@@ -1538,6 +1493,12 @@ def partner_and_event_register(request):
         if form.is_valid():
             form.save()
             aa = Webregister.objects.latest('id')
+            # created a link
+            aa.register_link = 'www.registerlink/'+ str(Webregister.objects.latest('id'))
+            aa.save()
+
+
+
             obj = Eventregisterationuser.objects.create(webregister=aa)
             form1 = EventregisteruserForm(request.POST, request.FILES, instance=obj)
 

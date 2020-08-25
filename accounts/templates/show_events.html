@@ -228,7 +228,7 @@ div.footer a.Cbtn-danger:hover{
 						<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
 							<div class="tile">
 								<div class="wrapper">
-									<div class="header">{{ object.Webregister.eventtitle }}</div>
+									<div class="header">{{ object.webregister.eventtitle }}</div>
 
 									<div class="banner-img">
 <!--												<h1>"{{object.header_eventimage}}"</h1>-->
@@ -239,25 +239,29 @@ div.footer a.Cbtn-danger:hover{
 									<div class="dates">
 										<div class="start">
 											<strong>STARTS</strong>
-											<p>{{ object.Webregister.created_on }}</p>
+											<p>{{ object.webregister.created_on }}</p>
+
+
+
 											<span></span>
 										</div>
 										<div class="ends">
 											<strong>ENDS</strong>
-											<p>{{ object.Webregister.ends_on }}</p>
+											<p>{{ object.webregister.ends_on }}</p>
 										</div>
 									</div>
 
 									<div class="stats">
 
 									<h6>Event Type for Target Audience:</h6>
-									<p style="font-weight:300">Webinar for {{ object.Webregister.targetaudiance }} </p>
+									<p style="font-weight:300">Webinar for {{ object.webregister.targetaudiance }} </p>
 
 									<h6>Organized By:</h6>
-									<p style="font-weight:300">Webinar for {{ object.Webregister.organizedby }} </p>
+									<p style="font-weight:300">Webinar for {{ object.webregister.organizedby }} </p>
 
 									<h6>Support By:</h6>
-									<p style="font-weight:300">Webinar for {{ object.Webregister.sponserby }} </p>
+									<p style="font-weight:300">Webinar for {{ object.webregister.sponserby }} </p>
+
 
 
 
@@ -268,7 +272,8 @@ div.footer a.Cbtn-danger:hover{
 									</div>
 
 									<div style="background:none" class="footer">
-										<a href="#" class="Cbtn Cbtn-primary">Register Now</a>
+
+										<a href="{% url 'event_register_form' object.webregister.id %}" class="Cbtn Cbtn-primary">Register Now</a>
 
 										<a href="javascript:void(0)" class="Cbtn Cbtn-primary">Join Event</a>
 

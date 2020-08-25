@@ -740,12 +740,13 @@ span.switch-label:after {
                                  <div class="col-md-6 text-justify">
 
 
-                                      Header <input type='file' name="header_eventimage" id="header_eventimage" onchange="readURL(this);" />
+                                      Header <input type='file' name="header_eventimage" id="header_eventimage" onchange="readURL(this); GetFileSize()" />
 									  <br><span style="font-size:11px;color:#cd2628"> (Upload an image of .png or .jpeg with 1000*100 Pixel and maximum size of 1MB)</span>
                                    <hr>
 
 
                                  </div>
+                                <p id="fp"></p>
 
                                  <div class="col-md-6 text-justify">
 
@@ -947,7 +948,24 @@ $(document).ready(function(){
 });
 
 </script>
+<script>
+    function GetFileSize() {
+        var fi = document.getElementById('header_eventimage'); // GET THE FILE INPUT.
 
+        // VALIDATE OR CHECK IF ANY FILE IS SELECTED.
+        if (fi.files.length > 0) {
+            // RUN A LOOP TO CHECK EACH SELECTED FILE.
+            for (var i = 0; i <= fi.files.length - 1; i++) {
+
+                var fsize = fi.files.item(i).size;      // THE SIZE OF THE FILE.
+                document.getElementById('fp').innerHTML =
+                    document.getElementById('fp').innerHTML + '<br /> ' +
+                        '<b>' + Math.round((fsize / 1024)) + '</b> KB';
+                        alert(fsize);
+            }
+        }
+    }
+</script>
   {% endblock %}
 
 
