@@ -42,25 +42,36 @@ def show_events(request):
     print(context,'context')
 
     return render(request,'show_events.html',context)
+
+def user_register_category(request):
+    pass
+
 @csrf_exempt
 def event_register_form(request,module_id):
     module = Webregister.objects.get(id=module_id)
     object = Eventregisterationuser.objects.get(webregister=module)
-    print(module,'module')
-    print(object,'object')
 
-    if request.method == "POST":
-        form = SignUpForm(request.POST)
+    check_category = Webregister.objects.get(id=module_id)
+    print(check_category.eventtype,check_category.targetaudiance,'category')
+
+    target = check_category.targetaudiance
+    print(target,'target') #Individual,HDC,Both
+
+
+    if request.method == "POST": #IndivdualDoctorForm
+        # form = IndivdualDoctorForm(request.POST)
+        form = IndivdualDoctorForm(request.POST)
         print(request.POST,'post')
         print("before validation", form.errors)
         if form.is_valid():
 
             form.save()
             print("done with signup")
-            messages.success(request, 'Form submitted sucessfully')
+            messages.success(request,("{}{}{}".format("You are successfully registered for this ",module.eventtitle," event")))
+
     else:
-        form = SignUpForm()
-    return render(request,'home_user.html',{'form':form,'object':object})
+        form = IndivdualDoctorForm()
+    return render(request,'home_user.html',{'form':form,'object':object,'target':target})
 
 
 

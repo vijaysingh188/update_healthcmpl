@@ -9,15 +9,17 @@ contact, activate_account, register, password_reset, contact_master, change_pass
 verify_otp, existing_module_master, create_module_master, edit_module_master, destroy_module_master, 
 addservice,addonservice,destroyonservice,pharmacy,pharmacytable,laboratory,lob,destroypharamcy,
 destroylaboratory,edit_service,edit_pharmacy, add_individual_user, User_creation, account_status_change,
-coupon_code_list, register1, Coupon_to_create,add_coupon,Coupon_status_change,custom_account_status_change, Custom_user_list, event_visibility,partner_and_event_register,home_event,registerlink,partner_visibility,eventregister,eventtable,editevent,destroyevent,Add_streaming_link)
+coupon_code_list, register1, Coupon_to_create,add_coupon,Coupon_status_change,custom_account_status_change, Custom_user_list, event_visibility,partner_and_event_register,home_event,registerlink,partner_visibility,eventregister,eventtable,editevent,destroyevent,Add_streaming_link,user_register_category)
 from profiles.views import individual_doctor, individual_user, nursing_home, hospital, useraddebyindvidualdoctor, individual_doctor_user_list, individual_doctor_user_creation, individual_doctor_change_password, set_password, user_password
 urlpatterns = [
     path('admin/', admin.site.urls),
+
 
     path('',home, name="home"),
     # path('sign_up/',sign_up, name="sign_up"),sign_up,
     path('user_login/',user_login, name="user_login"),
     path('event_register_form/<int:module_id>',event_register_form, name="event_register_form"),
+    path('user_register_category',user_register_category, name="user_register_category"),
     path('show_events/',show_events, name="show_events"),
     # path('password_reset_user/',password_reset_user, name="password_reset_user"),password_reset_user,
     path('contact/',contact, name="contact"),

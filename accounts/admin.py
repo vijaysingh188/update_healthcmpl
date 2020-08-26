@@ -2,6 +2,7 @@ from django.contrib import admin
 from accounts.models import CustomUser,Eventregisterationuser,Webregister,Coupon,AddOnServices,LaboratoryModule,pharamcytab,ModuleMaster
 
 admin.site.register(CustomUser)
+# admin.site.register(IndivdualDoctorForm)IndivdualDoctorForm,
 
 class Eventregisteradmin(admin.ModelAdmin):
     list_filter = ['id']

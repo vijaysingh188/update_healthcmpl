@@ -59,7 +59,7 @@ class IndivdualDoctorForm(ModelForm):
         ('DG','Front Desk'),
         )
     type_of_doctor = forms.ChoiceField(choices=doctor_options)
-    title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Title'}))
+    title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Title'}),required=False)
     first_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'First Name'}))
     middle_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Middle Name'}))
     last_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Last Name'}))
@@ -70,7 +70,9 @@ class IndivdualDoctorForm(ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'id':'log'}),required=False)
     class Meta:
         model = CustomUser
-        fields = ['type_of_doctor','title','first_name','middle_name','last_name','phone_no','payment','usecode','email','password']
+        # fields = ['type_of_doctor','title','first_name','middle_name','last_name','phone_no','payment','usecode','email','password']
+        fields = ['type_of_doctor', 'first_name', 'middle_name', 'last_name', 'phone_no','email', 'password']
+
 
 
 class HospitalForm(ModelForm):
