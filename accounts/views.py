@@ -101,6 +101,7 @@ def event_register_form(request,module_id):
                 data = response.json()
                 # IndivdualDoctorProfile.objects.create(user=request.user)
                 print("done")
+                form = IndivdualDoctorForm()
 
 
                 return redirect('/event_register_form/'+str(module_id),messages.success(request, '{}{}{}'.format("Form has submiited succesfully for this ",title," event"), 'alert-success'))
@@ -108,21 +109,9 @@ def event_register_form(request,module_id):
                 return redirect('/event_register_form/'+str(module_id),messages.success(request, ("Form is invalid"), 'alert-danger'))
         else:
             form1 = IndivdualUserForm(request.POST)
-            print(request.POST,'post')
-            print(form1.errors,'error')
+
             if form1.is_valid():
                 user = form1.save(commit=False)
-                first_name = form1.cleaned_data.get('first_name')
-                print(first_name,'first_name')
-                middle_name = form1.cleaned_data.get('middle_name')
-                print(middle_name,'middle_name')
-                last_name = form1.cleaned_data.get('last_name')
-                print(last_name,'last_name')
-                phone_no = form1.cleaned_data.get('phone_no')
-                print(phone_no,'phone_no')
-                email = form1.cleaned_data.get('email')
-                print(email,'email')
-
 
                 password = form1.cleaned_data.get('password')
                 confirm_password = form1.cleaned_data.get('confirm_password')
@@ -130,7 +119,6 @@ def event_register_form(request,module_id):
 
                 if password != confirm_password:
                     return redirect('/event_register_form/' + str(module_id),messages.error(request, "Password Should Match "),'alert-danger')
-                print("doneewfkjebfew")
                 user.set_password(password)
                 user.is_individual = True
 
@@ -162,6 +150,7 @@ def event_register_form(request,module_id):
                 print(data,'data')
                 IndivdualUserProfile.objects.create(user=request.user)
                 print("it works")
+                form1 = IndivdualUserForm()
 
                 return redirect('/event_register_form/'+str(module_id),messages.success(request, '{}{}{}'.format("Form has submiited succesfully for this ",title," event"), 'alert-success'))
             else:
@@ -173,6 +162,7 @@ def event_register_form(request,module_id):
     else:
         f = IndivdualDoctorForm()
         f1 = IndivdualUserForm()
+
         return render(request,'home_user.html',{'form':f,'object':object,'target':target,'form1':f1})
 
 @csrf_exempt

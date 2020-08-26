@@ -357,7 +357,7 @@
 									</div>
 								{% endfor %}
 							{% endif %}
-    <form class="form-signin" method="POST" action="#">
+    <form class="form-signin" id="contactForm" method="POST" action="#">
     <input type="text" class="form-control" name="username" id="username" placeholder="Email Address or User Name" required autofocus>
     <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
     <button class="btn btn-lg btn-primary btn-block" type="submit" value="login" id="saveBtn">
@@ -402,6 +402,7 @@
 		    </div>
 		</div>
 	<footer>
+
 	<script>
 	    function selectFormType() {
         if (document.getElementById('hdc').checked) {
@@ -432,7 +433,12 @@
      <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
 	<script src="{% static 'js/popper-1.16.0.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script>
 
+			$( document ).ready(function() {
+    document.getElementById("id_phone_no").setAttribute("placeholder", "Phone Number");
+});
+</script>
 
 		<script>
 
@@ -457,6 +463,7 @@ $.ajax({
 	},
 	success: function(response) {
 		alert("login succesfully")
+
 		var url = window.location.href;
 		var id = url.substring(url.lastIndexOf('/') + 1);
 		console.log("sdsdsd"+id);
