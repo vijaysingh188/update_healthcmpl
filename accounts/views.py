@@ -49,31 +49,158 @@ def user_register_category(request):
 @csrf_exempt
 def event_register_form(request,module_id):
     module = Webregister.objects.get(id=module_id)
+    link = module.register_link
+    print(module.register_link,'reglink')
     object = Eventregisterationuser.objects.get(webregister=module)
 
     check_category = Webregister.objects.get(id=module_id)
-    print(check_category.eventtype,check_category.targetaudiance,'category')
-
     target = check_category.targetaudiance
-    print(target,'target') #Individual,HDC,Both
+    title = check_category.eventtitle
+
+    if request.method == "POST":
+        if 'type_of_doctor' in request.POST:
+            form = IndivdualDoctorForm(request.POST)
+            if form.is_valid():
+
+                user = form.save(commit=False)
+                password = form.cleaned_data.get('password')
+                confirm_password = form.cleaned_data.get('confirm_password')
+
+                if password != confirm_password:
+                    return redirect('/event_register_form/' + str(module_id), messages.error(request, "Password Should Match "), 'alert-danger')
+
+                print("yes")
+                type = form.cleaned_data.get('type_of_doctor')
+                user.type_of_doctor = type
+                user.set_password(password)
+                user.is_hdc_individual = True
+                user.save()
+                email_subject = 'Welcome To Health Perigon!'
+                valid_till = (datetime.datetime.now() + datetime.timedelta(days=364)).date()
+                date = json.dumps(valid_till, indent=4, sort_keys=True, default=str)
+                type1 = "HDC - Individual Doctor"
+                message = render_to_string('activate_account.html', {
+                    'user': user,
+                    'type': type1,
+                    'valid_till': valid_till,
+                    'link': link,
+                })
+                to_email = form.cleaned_data.get('email')
+                phone_no = form.cleaned_data.get('phone_no')
+                email = EmailMessage(email_subject, message, to=[to_email])
+                email.content_subtype = 'html'
+                email.send()
+                payload = {}
+                payload['authkey'] = "95631AQvoigMsq5ec52866P1"
+                payload['content-type'] = "application/json"
+                payload['mobiles'] = phone_no
+                payload['flow_id'] = "5efada07d6fc05445570a4f2"
+                payload['ID'] = user.special_id
+                url = "https://api.msg91.com/api/v5/flow/"
+                response = requests.post(url, json=payload)
+                data = response.json()
+                # IndivdualDoctorProfile.objects.create(user=request.user)
+                print("done")
 
 
-    if request.method == "POST": #IndivdualDoctorForm
-        # form = IndivdualDoctorForm(request.POST)
-        form = IndivdualDoctorForm(request.POST)
-        print(request.POST,'post')
-        print("before validation", form.errors)
-        if form.is_valid():
+                return redirect('/event_register_form/'+str(module_id),messages.success(request, '{}{}{}'.format("Form has submiited succesfully for this ",title," event"), 'alert-success'))
+            else:
+                return redirect('/event_register_form/'+str(module_id),messages.success(request, ("Form is invalid"), 'alert-danger'))
+        else:
+            form1 = IndivdualUserForm(request.POST)
+            print(request.POST,'post')
+            print(form1.errors,'error')
+            if form1.is_valid():
+                user = form1.save(commit=False)
+                first_name = form1.cleaned_data.get('first_name')
+                print(first_name,'first_name')
+                middle_name = form1.cleaned_data.get('middle_name')
+                print(middle_name,'middle_name')
+                last_name = form1.cleaned_data.get('last_name')
+                print(last_name,'last_name')
+                phone_no = form1.cleaned_data.get('phone_no')
+                print(phone_no,'phone_no')
+                email = form1.cleaned_data.get('email')
+                print(email,'email')
 
-            form.save()
-            print("done with signup")
-            messages.success(request,("{}{}{}".format("You are successfully registered for this ",module.eventtitle," event")))
+
+                password = form1.cleaned_data.get('password')
+                confirm_password = form1.cleaned_data.get('confirm_password')
+
+
+                if password != confirm_password:
+                    return redirect('/event_register_form/' + str(module_id),messages.error(request, "Password Should Match "),'alert-danger')
+                print("doneewfkjebfew")
+                user.set_password(password)
+                user.is_individual = True
+
+                user.save()
+                email_subject = 'Welcome To Health Perigon!'
+                valid_till = (datetime.datetime.now() + datetime.timedelta(days=364)).date()
+                date = json.dumps(valid_till, indent=4, sort_keys=True, default=str)
+                type1 = "HDC - Individual User"
+                message = render_to_string('activate_account.html', {
+                    'user': user,
+                    'type': type1,
+                    'valid_till': valid_till,
+                    'link': link,
+                })
+                to_email = form1.cleaned_data.get('email')
+                phone_no = form1.cleaned_data.get('phone_no')
+                email = EmailMessage(email_subject, message, to=[to_email])
+                email.content_subtype = 'html'
+                email.send()
+                payload = {}
+                payload['authkey'] = "95631AQvoigMsq5ec52866P1"
+                payload['content-type'] = "application/json"
+                payload['mobiles'] = phone_no
+                payload['flow_id'] = "5efada07d6fc05445570a4f2"
+                payload['ID'] = user.special_id
+                url = "https://api.msg91.com/api/v5/flow/"
+                response = requests.post(url, json=payload)
+                data = response.json()
+                print(data,'data')
+                IndivdualUserProfile.objects.create(user=request.user)
+                print("it works")
+
+                return redirect('/event_register_form/'+str(module_id),messages.success(request, '{}{}{}'.format("Form has submiited succesfully for this ",title," event"), 'alert-success'))
+            else:
+                return redirect('/event_register_form/'+str(module_id),messages.success(request, "Form is invalid", 'alert-success'))
+
+
+
 
     else:
-        form = IndivdualDoctorForm()
-    return render(request,'home_user.html',{'form':form,'object':object,'target':target})
+        f = IndivdualDoctorForm()
+        f1 = IndivdualUserForm()
+        return render(request,'home_user.html',{'form':f,'object':object,'target':target,'form1':f1})
 
-
+@csrf_exempt
+def login_view_admin_user(request,module_id):
+    next = request.GET.get("next")
+    form = UserLoginForm(request.POST or None)
+    if form.is_valid():
+        username = form.cleaned_data.get('username')
+        print(username,'username')
+        password = form.cleaned_data.get('password')
+        user = authenticate(username = username, password = password)
+        if not user:
+            return redirect('/login_view_admin_user/' + str(module_id), messages.success(request,"sfgfbvbfbvbv", 'alert-success'))
+        login(request, user)
+        print("doneeeeeeeeeee")
+        if next:
+            return redirect(next)
+        if request.user.is_superuser:
+            return redirect('existing_module_master')
+        elif request.user.is_hdc_individual:
+            return redirect('profile_individual_doctor')
+        elif request.user.is_individual:
+            return redirect('profile_individual_user')
+        elif request.user.is_hdc_hospital:
+            return redirect('profile_hospital')
+        elif request.user.is_hdc_nursing_home:
+            return redirect('profile_nursing_home')
+    return render(request, "Contact_Us.html", {'form': form})
 
 
 @csrf_exempt
@@ -980,7 +1107,7 @@ def register1(request):
             message = render_to_string('activate_account.html', {
                 'user': user,
                 'type': type1,
-                'valid_till' : valid_till,
+                'valid_till': valid_till,
             })
             to_email = form1.cleaned_data.get('email')
             phone_no = form1.cleaned_data.get('phone_no')
@@ -998,10 +1125,10 @@ def register1(request):
             data = response.json()
             login(request, user)
             if request.user.is_authenticated:
-                IndivdualDoctorProfile.objects.create(user= request.user)
+                IndivdualDoctorProfile.objects.create(user=request.user)
             if next:
                 return redirect(next)
-            return redirect('/register1',messages.error(request,'Successfully Register','alert-success'))
+            return redirect('/register1', messages.error(request, 'Successfully Register', 'alert-success'))
         else:
             email = request.POST.get('email')
             phone_no = request.POST.get('phone_no')
@@ -1019,8 +1146,8 @@ def register1(request):
         if form2.is_valid():
             user = form2.save(commit=False)
             password = form2.cleaned_data.get('password')
-            #payment = request.POST.get('yesno')
-            #user.payment = payment
+            # payment = request.POST.get('yesno')
+            # user.payment = payment
             user.set_password(password)
             user.is_hdc_hospital = True
             user.save()
@@ -1031,7 +1158,7 @@ def register1(request):
             message = render_to_string('activate_account.html', {
                 'user': user,
                 'type': type1,
-                'valid_till' : valid_till,
+                'valid_till': valid_till,
             })
             to_email = form2.cleaned_data.get('email')
             phone_no = form2.cleaned_data.get('phone_no')
@@ -1049,10 +1176,10 @@ def register1(request):
             data = response.json()
             login(request, user)
             if request.user.is_authenticated:
-                HospitalProfile.objects.create(user= request.user)
+                HospitalProfile.objects.create(user=request.user)
             if next:
                 return redirect(next)
-            return redirect('/register1',messages.error(request,'Successfully Register','alert-success'))
+            return redirect('/register1', messages.error(request, 'Successfully Register', 'alert-success'))
         else:
             email = request.POST.get('email')
             phone_no = request.POST.get('phone_no')
@@ -1080,7 +1207,7 @@ def register1(request):
             message = render_to_string('activate_account.html', {
                 'user': user,
                 'type': type1,
-                'valid_till' : valid_till,
+                'valid_till': valid_till,
             })
             to_email = form3.cleaned_data.get('email')
             phone_no = form3.cleaned_data.get('phone_no')
@@ -1098,10 +1225,10 @@ def register1(request):
             data = response.json()
             login(request, user)
             if request.user.is_authenticated:
-                NursingHomeProfile.objects.create(user= request.user)
+                NursingHomeProfile.objects.create(user=request.user)
             if next:
                 return redirect(next)
-            return redirect('/register1',messages.error(request,'Successfully Register','alert-success'))
+            return redirect('/register1', messages.error(request, 'Successfully Register', 'alert-success'))
         else:
             email = request.POST.get('email')
             phone_no = request.POST.get('phone_no')
@@ -1129,7 +1256,7 @@ def register1(request):
             message = render_to_string('activate_account.html', {
                 'user': user,
                 'type': type1,
-                'valid_till' : valid_till,
+                'valid_till': valid_till,
             })
             to_email = form.cleaned_data.get('email')
             phone_no = form.cleaned_data.get('phone_no')
@@ -1147,10 +1274,10 @@ def register1(request):
             data = response.json()
             login(request, user)
             if request.user.is_authenticated:
-                IndivdualUserProfile.objects.create(user= request.user)
+                IndivdualUserProfile.objects.create(user=request.user)
             if next:
                 return redirect(next)
-            return redirect('/register1',messages.error(request,'Successfully Register','alert-success'))
+            return redirect('/register1', messages.error(request, 'Successfully Register', 'alert-success'))
         else:
             email = request.POST.get('email')
             phone_no = request.POST.get('phone_no')
@@ -1163,7 +1290,7 @@ def register1(request):
     else:
         form = IndivdualUserForm()
 
-    return render(request, "register1.html", {'form':form, 'form1':form1, 'form2':form2, 'form3':form3})
+    return render(request, "register1.html", {'form': form, 'form1': form1, 'form2': form2, 'form3': form3})
 
 
 def Custom_user_list(request):
@@ -1405,7 +1532,7 @@ def partner_and_event_register(request):
             form.save()
             aa = Webregister.objects.latest('id')
             # created a link
-            aa.register_link = 'www.registerlink/'+ str(Webregister.objects.latest('id'))
+            aa.register_link = 'www.healthperigon.net/'+ str(Webregister.objects.latest('id'))
             aa.save()
 
 

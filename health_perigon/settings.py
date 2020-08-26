@@ -123,9 +123,9 @@ USE_L10N = False
 
 USE_TZ = True
 
-from django.conf.global_settings import DATETIME_INPUT_FORMATS # DATE_INPUT_FORMATS d/m/Y "Y/m/d"
+from django.conf.global_settings import DATETIME_INPUT_FORMATS # DATE_INPUT_FORMATS
 # DATE_INPUT_FORMATS += ("%d-%m-%Y",)
-DATETIME_INPUT_FORMATS += ("%Y-%m-%dT%H:%M","%d-%m-%Y %H:%M:%S","%Y-%m-%d %H:%M","%m-%d-%Y","%m/%d/%Y","%Y/%m/%d","%Y-%m-%d")  #'%Y-%m-%dT%H:%M' '%Y-%m-%dT%H:%M'
+DATETIME_INPUT_FORMATS += ("%Y-%m-%dT%H:% M","%d-%m-%Y %H:%M:%S","%Y-%m-%d %H:%M")  #'%Y-%m-%dT%H:%M' '%Y-%m-%dT%H:%M'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

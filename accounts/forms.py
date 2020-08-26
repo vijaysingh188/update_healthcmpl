@@ -33,17 +33,18 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class IndivdualUserForm(ModelForm):
-    title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Title'}))
+    title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Title'}),required=False)
     first_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'First Name'}))
     middle_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Middle Name'}))
     last_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Last Name'}))
-    phone_no = forms.CharField(required=False,max_length=10, validators=[MinLengthValidator(10)],error_messages={'required':'Enter a Valid Phone Number'})
+    phone_no = forms.CharField(required=False,max_length=10,validators=[MinLengthValidator(10)],error_messages={'required':'Enter a Valid Phone Number'})
     email = forms.EmailField(required=False,error_messages={'required':'Enter a Valid Email Address'})
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'id':'pass_log_id'}),required=False)
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'id':'pass_log_id','placeholder':'Password'}),required=False)
+    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'id': 'password2','placeholder':'Confirm Password'}), required=False)
     usecode = forms.CharField(required=False)
     class Meta:
         model = CustomUser
-        fields = ['title','first_name','middle_name','last_name','phone_no','email','password','usecode']
+        fields = ['first_name','middle_name','last_name','phone_no','email','password','usecode'] #'title',
 
 
 
@@ -63,21 +64,24 @@ class IndivdualDoctorForm(ModelForm):
     first_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'First Name'}))
     middle_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Middle Name'}))
     last_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Last Name'}))
-    phone_no = forms.CharField(required=False,max_length=10, validators=[MinLengthValidator(10)],error_messages={'required':'Enter a Valid Phone Number'})
+    phone_no = forms.CharField(required=False,max_length=10, validators=[MinLengthValidator(10)],error_messages={'required':'Enter a Valid Phone Number'}) #attrs={'placeholder':'Phone Number'},
     payment = forms.CharField(required=False)
     usecode = forms.CharField(required=False)
     email = forms.EmailField(required=False,error_messages={'required':'Enter a Valid Email Address'})
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'id':'log'}),required=False)
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'id':'log','placeholder':'Password'}),required=False)
+    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'id': 'password2','placeholder':'Confirm Password'}), required=False)
+
+
     class Meta:
         model = CustomUser
-        # fields = ['type_of_doctor','title','first_name','middle_name','last_name','phone_no','payment','usecode','email','password']
-        fields = ['type_of_doctor', 'first_name', 'middle_name', 'last_name', 'phone_no','email', 'password']
+        fields = ['type_of_doctor','title','first_name','middle_name','last_name','phone_no','payment','usecode','email','password']
+
 
 
 
 class HospitalForm(ModelForm):
     name_of_hospital = forms.CharField()
-    house_no = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'House No'}))
+    house_no = forms.CharField( widget=forms.TextInput(attrs={'placeholder':'House No'}))
     street = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Street'}))
     area = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Locality / Area / Pada'}))
     city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City / Town / Village'}))
@@ -213,7 +217,7 @@ class pharamcy(ModelForm):
        fields = ['companyname','addresslineone','addresslinetwo','streetname','city','country','state','pincode','nationalhead','contactnumber','emailaddress','phonenumber','regionalhead','regionalcontactnumber','regionalemailaddress','regionalphonenumber','scientifichead','scientificcontactnumber','scientificemailaddress','scientificphonenumber']
 
 class IndivdualUserForm1(ModelForm):
-    title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Title'}))
+    title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Title'}),required=False)
     first_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'First Name'}))
     middle_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Middle Name'}))
     last_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Last Name'}))
@@ -224,11 +228,7 @@ class IndivdualUserForm1(ModelForm):
     class Meta:
         model = CustomUser
         fields = ['title','first_name','middle_name','last_name','phone_no','email','password','usecode']
-    #def clean(self, *args,**kwargs):
-    #	email = self.cleaned_data['email']
-    #	if CustomUser.objects.filter(email=email).exists():
-    #		raise ValidationError("Email already exists")
-    #	return super(IndivdualUserForm, self).clean(*args, **kwargs)
+
 
 
 class IndivdualDoctorForm1(ModelForm):

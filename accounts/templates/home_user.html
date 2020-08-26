@@ -185,11 +185,11 @@
 							{% endif %}
 
 
-
+									{% if target == 'HDC' or target == 'Both' %}
 								<form method="POST">
 
 
-								{% if target == 'HDC' or target == 'Both' %}
+<!--								{% if target == 'HDC' or target == 'Both' %}-->
 
 								<div class="form-group input-group">
 									<div class="input-group-prepend">
@@ -201,7 +201,7 @@
 
 
 
-									{% endif %}
+<!--									{% endif %}-->
 
 								<div class="form-group input-group">
 									<div class="input-group-prepend">
@@ -243,12 +243,12 @@
 										<span class="input-group-text"> <i class="fa fa-lock"></i> </span>
 									</div>
 									{{ form.password | add_class:'form-control' }}
-								</div> <!-- form-group// -->
+								</div>
 								<div class="form-group input-group">
 									<div class="input-group-prepend">
 										<span class="input-group-text"> <i class="fa fa-lock"></i> </span>
 									</div>
-									{{ form.password | add_class:'form-control' }}
+									{{ form.confirm_password| add_class:'form-control' }}
 								</div> <!-- form-group// -->
 								<div class="form-group">
 									<button style="background:#00adee" type="submit" value="signup" class="btn btn-primary btn-block"> Register </button>
@@ -256,6 +256,63 @@
 								<p class="text-center">Have an account? <a data-toggle="modal" data-target="#squarespaceModal" style="color:#d1232a;font-weight:600" href="#">Log In</a> </p>
 
 								</form>
+								{% else %}
+								<form method="POST">
+
+								<div class="form-group input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text"> <i class="fa fa-user"></i> </span>
+									 </div>
+									<input name="first_name" class="form-control" placeholder="First name" type="text">
+
+
+									<input name="middle_name" class="form-control" placeholder="Middle name" type="text">
+
+
+									<input name="last_name"  class="form-control" placeholder="Last name" type="text">
+
+								</div> <!-- form-group// -->
+
+
+
+								<div class="form-group input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+									 </div>
+									<input name="email" class="form-control" placeholder="Email address" type="email">
+								</div> <!-- form-group// -->
+								<div class="form-group input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text"> <i class="fa fa-phone"></i> </span>
+									</div>
+									<select class="custom-select" style="max-width: 70px;">
+										<option selected="">+91</option>
+
+
+									</select>
+
+									{{ form1.phone_no | add_class:'form-control' }}
+								</div> <!-- form-group// -->
+
+								<div class="form-group input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+									</div>
+									{{ form1.password | add_class:'form-control' }}
+								</div> <!-- form-group// -->
+								<div class="form-group input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+									</div>
+									{{ form1.confirm_password | add_class:'form-control' }}
+								</div> <!-- form-group// -->
+								<div class="form-group">
+									<button style="background:#00adee" type="submit" value="signup" id="checkBtn" class="btn btn-primary btn-block"> Register </button>
+								</div> <!-- form-group// -->
+								<p class="text-center">Have an account? <a data-toggle="modal" data-target="#squarespaceModal" style="color:#d1232a;font-weight:600" href="#">Log In</a> </p>
+
+								</form>
+								{% endif %}
 							</article>
 
 
@@ -291,7 +348,7 @@
         <div class="col-md-12">
 
 	<div class="account-wall">
-    <img class="profile-img" src="images/logo.png"
+    <img class="profile-img" src="{% static 'images/logo.png' %}"
         alt="">
 							{% if messages %}
 								{% for message in messages %}
@@ -300,10 +357,10 @@
 									</div>
 								{% endfor %}
 							{% endif %}
-    <form class="form-signin" method="POST" action="{% url 'partner_and_event_register' %}">
+    <form class="form-signin" method="POST" action="#">
     <input type="text" class="form-control" name="username" id="username" placeholder="Email Address or User Name" required autofocus>
     <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
-    <button class="btn btn-lg btn-primary btn-block" type="submit" value="login" id="myBtnSave">
+    <button class="btn btn-lg btn-primary btn-block" type="submit" value="login" id="saveBtn">
         Register</button>
 
     <a style="color:#d1232a;font-weight:600" href="{% url 'password_reset_admin' %}" class="pull-right need-help">Forget Password? </a><span class="clearfix"></span>
@@ -375,42 +432,8 @@
      <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
 	<script src="{% static 'js/popper-1.16.0.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
-<!--<script>-->
-<!--let formData = {-->
-<!--	profileChoice:"",-->
-
-<!--};-->
-<!--$("#categorySave").click(function(e) {-->
-<!--	e.preventDefault();-->
-<!--	formData.profileChoice = $('#Profile_choices').find(":selected").val();-->
-
-<!--	console.log(formData)-->
-
-<!--$.ajax({-->
-<!--	type: 'POST',-->
-<!--	url: "{% url 'user_register_category' %}",-->
-<!--	data: {-->
-<!--		'username': formData.profileChoice,-->
-
-<!--		'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()-->
-<!--	},-->
-<!--	success: function(response) {-->
-<!--		alert("worked sucessfully")-->
 
 
-
-
-
-<!--	},-->
-
-<!--	error: function(data) {-->
-<!--		alert("failed")-->
-<!--	},-->
-
-<!--});-->
-<!--});-->
-<!--});-->
-<!--</script>-->
 		<script>
 
 let formData = {
@@ -418,7 +441,7 @@ let formData = {
 	password: "",
 
 };
-$("#myBtnSave").click(function(e) {
+$("#saveBtn").click(function(e) {
 	e.preventDefault();
 	formData.username = $("#username").val();
 	formData.password = $("#password").val();
@@ -434,7 +457,12 @@ $.ajax({
 	},
 	success: function(response) {
 		alert("login succesfully")
-<!--		$("#squarespaceModal").hide();-->
+		var url = window.location.href;
+		var id = url.substring(url.lastIndexOf('/') + 1);
+		console.log("sdsdsd"+id);
+
+
+
 
 
 
@@ -447,7 +475,7 @@ $.ajax({
 
 });
 });
-});
+
 
 
 		</script>
